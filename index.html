@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BAMBI | Portfolio</title>
+
+    <link rel="stylesheet" href="finalproject.css" />
+    <script defer src="finalproject.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda+SC:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <audio id="audio" src="assets/audio/track.mp3"></audio>
+    <button onclick="document.getElementById('audio').play()">Play</button>
+    <canvas id="visualizer"></canvas>
+
+    <!-- BACKGROUND ANIMATION LAYER -->
+    <div class="background"></div>
+
+    <div class="cursor"></div>
+
+    <section class="accordion glass glow"></section>
+
+    <div class="mouse-gradient" id="mouseGradient"></div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="container">
+      <!-- HEADER -->
+      <header>
+        <h1 class="logo glitch" data-text="BAMBI">BAMBI</h1>
+        <p class="tagline">Flavor with Friction</p>
+      </header>
+
+      <!-- ACCORDION NAVIGATION -->
+      <section class="accordion">
+        <section class="accordion reveal"></section>
+
+        <!-- MUSIC -->
+        <div class="accordion-item">
+          <button class="accordion-header">Music</button>
+          <div class="accordion-content">
+            <a href="music.html">DJ Sets</a>
+            <a href="music.html#music">Tracks</a>
+            <a href="music.html">Sound Design</a>
+          </div>
+        </div>
+
+        <!-- DESIGN -->
+        <div class="accordion-item">
+          <button class="accordion-header">Digital Design</button>
+          <div class="accordion-content">
+            <a href="#">Posters</a>
+            <a href="#">Branding</a>
+            <a href="#">Typography</a>
+          </div>
+        </div>
+
+        <!-- ART -->
+        <div class="accordion-item">
+          <button class="accordion-header">World Building</button>
+          <div class="accordion-content">
+            <a href="#">Fine Art</a>
+            <a href="#">Concept Work</a>
+            <a href="#">Visual Experiments</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
