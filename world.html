@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BAMBI | World</title>
+    <link rel="stylesheet" href="world.css" />
+    <script defer src="world.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda+SC:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- ── LOADER ──────────────────────────────────── -->
+    <div id="loader" class="loader" aria-hidden="true">
+      <div class="loader-line loader-line--top"></div>
+      <div class="loader-content">
+        <!-- Gothic void sigil — cracks open on load -->
+        <div class="loader-void" aria-hidden="true">
+          <div class="void-ring void-ring--outer"></div>
+          <div class="void-ring void-ring--mid"></div>
+          <div class="void-crack void-crack--v"></div>
+          <div class="void-crack void-crack--h"></div>
+          <div class="void-core"></div>
+        </div>
+        <h1 class="loader-logo">BAMBI</h1>
+        <p class="loader-tagline">Systems &nbsp;·&nbsp; Worlds &nbsp;·&nbsp; Visions</p>
+        <div class="loader-progress-track">
+          <div class="loader-progress-fill" id="loaderProgress"></div>
+        </div>
+      </div>
+      <div class="loader-line loader-line--bottom"></div>
+    </div>
+
+    <!-- ── CANVAS ─────────────────────────────────── -->
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+    <!-- ── GRAIN ─────────────────────────────────── -->
+    <div class="grain" aria-hidden="true"></div>
+    <!-- CRT scanlines — punk/grunge VHS texture -->
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <!-- ── CURSOR ────────────────────────────────── -->
+    <div class="cursor" id="cursor" aria-hidden="true">
+      <div class="cursor-inner"></div>
+    </div>
+    <div class="mouse-glow" id="mouseGlow" aria-hidden="true"></div>
+
+    <!-- ── THEME TOGGLE ──────────────────────────── -->
+    <button
+      class="theme-toggle"
+      id="themeToggle"
+      aria-label="Toggle light/dark theme"
+    >
+      ◐ Theme
+    </button>
+
+    <!-- ── NAV ─────────────────────────────────────── -->
+    <nav class="site-nav" aria-label="Main navigation">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-brand">BAMBI</a>
+        <button class="ham-btn" id="hamBtn" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="neural-nav" aria-label="Site sections">
+          <a href="music.html" class="nn-node nn-music" aria-label="Music">
+            <span class="nn-dot"></span><span class="nn-label">Music</span>
+          </a>
+          <div class="nn-wire" aria-hidden="true">
+            <div class="nn-pulse"></div>
+          </div>
+          <a href="design.html" class="nn-node nn-design" aria-label="Design">
+            <span class="nn-dot"></span><span class="nn-label">Design</span>
+          </a>
+          <div class="nn-wire" aria-hidden="true">
+            <div class="nn-pulse"></div>
+          </div>
+          <a
+            href="world.html"
+            class="nn-node nn-world nn-active"
+            aria-label="World"
+          >
+            <span class="nn-dot"></span><span class="nn-label">World</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <a href="index.html"  class="mob-link">Home</a>
+      <a href="music.html"  class="mob-link">Music</a>
+      <a href="design.html" class="mob-link">Design</a>
+      <a href="https://solo.to/bambi.us" class="mob-link" target="_blank">All Links ↗</a>
+      <a href="mailto:"     class="mob-link">Email</a>
+    </div>
+
+    <!-- ── HERO (emredevseren atmospheric) ───────────── -->
+    <header class="hero">
+      <div class="hero-vignette" aria-hidden="true"></div>
+      <!-- hero-canvas — JS draws rotating gem + particle sphere here -->
+      <canvas id="hero-canvas" aria-hidden="true"></canvas>
+      <div class="hero-content">
+        <p class="hero-eyebrow">WORLD OF BAMBI &nbsp;·&nbsp; 2026</p>
+        <h1 class="hero-title">
+          <span class="ht-l1"></span>
+          <span class="ht-l2">Visions</span>
+          <span class="ht-l3"></span>
+        </h1>
+        <div class="hero-sub-row">
+          <div class="hero-rule-line" aria-hidden="true"></div>
+          <p class="hero-sub">
+            World Building &nbsp;·&nbsp; Digital Concepts &nbsp;·&nbsp; Motion
+            &nbsp;·&nbsp; Fine Art
+          </p>
+        </div>
+      </div>
+      <div class="hero-vert-text" aria-hidden="true">
+        2026 &nbsp;·&nbsp; BAMBI &nbsp;·&nbsp; NYC
+      </div>
+      <div class="hero-scroll" aria-hidden="true">
+        <div class="hero-scroll-line"></div>
+      </div>
+    </header>
+
+    <!-- ── MARQUEE ───────────────────────────────────── -->
+    <div class="marquee-bar" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Worlds</span><span class="mdot">·</span> <span>Concepts</span
+        ><span class="mdot">·</span> <span>Motion</span
+        ><span class="mdot">·</span> <span>Art</span><span class="mdot">·</span>
+        <span>Vision</span><span class="mdot">·</span> <span>Space</span
+        ><span class="mdot">·</span> <span>Form</span
+        ><span class="mdot">·</span> <span>Myth</span
+        ><span class="mdot">·</span> <span>Code</span
+        ><span class="mdot">·</span> <span>Cosmos</span
+        ><span class="mdot">·</span> <span>Worlds</span
+        ><span class="mdot">·</span> <span>Concepts</span
+        ><span class="mdot">·</span> <span>Motion</span
+        ><span class="mdot">·</span> <span>Art</span><span class="mdot">·</span>
+        <span>Vision</span><span class="mdot">·</span> <span>Space</span
+        ><span class="mdot">·</span> <span>Form</span
+        ><span class="mdot">·</span> <span>Myth</span
+        ><span class="mdot">·</span> <span>Code</span
+        ><span class="mdot">·</span> <span>Cosmos</span
+        ><span class="mdot">·</span>
+      </div>
+    </div>
+
+    <!-- ── STICKY SCROLL PANELS ──────────────────────── -->
+    <section class="sticky-wrapper" aria-label="Portfolio sections">
+      <!-- Panel 01: World Building -->
+      <div class="sticky-panel reveal-sp" id="sp-worlds">
+        <div class="sp-content">
+          <div class="sp-left">
+            <span class="sp-num" aria-hidden="true">01</span>
+            <h2 class="sp-title">World Building</h2>
+            <p class="sp-desc">
+              Constructed realities — lore, systems, universes built from
+              scratch.
+            </p>
+            <div class="sp-links">
+              <!-- ↓ REPLACE href="#" with project URL or link to relevant work -->
+              <a href="#" class="sp-link" target="_blank" rel="noopener"
+                >View Project ↗</a
+              >
+              <!-- ↓ REPLACE href="#" with live website URL -->
+              <a href="#" class="sp-link" target="_blank" rel="noopener"
+                >Live Site ↗</a
+              >
+            </div>
+          </div>
+          <div class="sp-right">
+            <div class="sp-img-wrap">
+              <!-- ↓ REPLACE: add src="assets/images/worlds-01.jpg" alt="Project name" -->
+              <img
+                src=""
+                alt="World building project — replace with your asset"
+                class="sp-img hover-zoom"
+              />
+              <div class="sp-img-placeholder">Drop image here</div>
+            </div>
+            <div class="sp-img-grid">
+              <div class="sp-img-small">
+                <!-- ↓ REPLACE: add src="assets/images/worlds-02.jpg" -->
+                <img
+                  src=""
+                  alt="World detail — replace"
+                  class="sp-img hover-zoom"
+                />
+                <div class="sp-img-placeholder small">Drop image</div>
+              </div>
+              <div class="sp-img-small">
+                <!-- ↓ REPLACE: add src="assets/images/worlds-03.jpg" -->
+                <img
+                  src=""
+                  alt="World detail — replace"
+                  class="sp-img hover-zoom"
+                />
+                <div class="sp-img-placeholder small">Drop image</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 02: Concepts & Prototypes -->
+      <div class="sticky-panel reveal-sp" id="sp-concepts">
+        <div class="sp-content">
+          <div class="sp-left">
+            <span class="sp-num" aria-hidden="true">02</span>
+            <h2 class="sp-title">Concepts &amp; Prototypes</h2>
+            <p class="sp-desc">
+              Experimental ideas, speculative design, and unfinished beautiful
+              things.
+            </p>
+            <div class="sp-links">
+              <!-- ↓ REPLACE href="#" with YouTube video URL for this concept -->
+              <a href="#" class="sp-link" target="_blank" rel="noopener"
+                >Watch on YouTube ↗</a
+              >
+              <!-- ↓ REPLACE href="#" with prototype / live URL -->
+              <a href="#" class="sp-link" target="_blank" rel="noopener"
+                >View Prototype ↗</a
+              >
+            </div>
+          </div>
+          <div class="sp-right">
+            <div class="sp-img-wrap">
+              <!-- ↓ REPLACE: add src="assets/images/concept-01.jpg" -->
+              <img
+                src=""
+                alt="Concept project — replace"
+                class="sp-img hover-zoom"
+              />
+              <div class="sp-img-placeholder">Drop image here</div>
+            </div>
+            <div class="sp-video-placeholder">
+              <!-- ↓ REPLACE: insert YouTube embed or video element here -->
+              <!-- Example: <iframe src="https://www.youtube.com/embed/YOUR_ID" width="100%" height="100%" frameborder="0" allowfullscreen></iframe> -->
+              <span>▶ Drop video / YouTube embed here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 03: Motion Graphics -->
+      <div class="sticky-panel reveal-sp" id="sp-motion">
+        <div class="sp-content">
+          <div class="sp-left">
+            <span class="sp-num" aria-hidden="true">03</span>
+            <h2 class="sp-title">Motion Graphics</h2>
+            <p class="sp-desc">
+              Moving image, visual rhythm, and time-based world-making.
+            </p>
+            <div class="sp-links">
+              <!-- ↓ REPLACE href="#" with your YouTube channel URL -->
+              <a href="#" class="sp-link" target="_blank" rel="noopener"
+                >YouTube Channel ↗</a
+              >
+              <!-- ↓ REPLACE href="#" with your showreel link -->
+              <a href="#" class="sp-link" target="_blank" rel="noopener"
+                >View Showreel ↗</a
+              >
+            </div>
+          </div>
+          <div class="sp-right">
+            <div class="sp-video-placeholder large">
+              <!-- ↓ REPLACE: insert your main reel / YouTube embed here -->
+              <!-- <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" width="100%" height="100%" frameborder="0" allowfullscreen></iframe> -->
+              <span>▶ Drop main reel / video here</span>
+            </div>
+            <div class="sp-video-row">
+              <div class="sp-video-placeholder">
+                <!-- ↓ REPLACE with YouTube embed URL -->
+                <span>▶ Video 2</span>
+              </div>
+              <div class="sp-video-placeholder">
+                <!-- ↓ REPLACE with YouTube embed URL -->
+                <span>▶ Video 3</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 04: Fine Art -->
+      <div class="sticky-panel reveal-sp" id="sp-art">
+        <div class="sp-content">
+          <div class="sp-left">
+            <span class="sp-num" aria-hidden="true">04</span>
+            <h2 class="sp-title">Fine Art &amp; Works</h2>
+            <p class="sp-desc">
+              Paintings, drawings, mixed media — the hand-made alongside the
+              digital.
+            </p>
+            <div class="sp-links">
+              <!-- ↓ REPLACE href="#" with prints / shop URL -->
+              <a href="#" class="sp-link" target="_blank" rel="noopener"
+                >Shop Prints ↗</a
+              >
+              <!-- ↓ REPLACE href="#" with Instagram or gallery URL -->
+              <a href="#" class="sp-link" target="_blank" rel="noopener"
+                >Gallery ↗</a
+              >
+            </div>
+          </div>
+          <div class="sp-right">
+            <div class="art-grid-2x2">
+              <!-- ↓ REPLACE each src="" with your artwork image paths -->
+              <div class="art-cell">
+                <img
+                  src=""
+                  alt="Artwork 1 — replace with your asset"
+                  class="sp-img hover-zoom"
+                />
+                <div class="sp-img-placeholder">Drop artwork</div>
+              </div>
+              <div class="art-cell">
+                <img
+                  src=""
+                  alt="Artwork 2 — replace with your asset"
+                  class="sp-img hover-zoom"
+                />
+                <div class="sp-img-placeholder">Drop artwork</div>
+              </div>
+              <div class="art-cell">
+                <img
+                  src=""
+                  alt="Artwork 3 — replace with your asset"
+                  class="sp-img hover-zoom"
+                />
+                <div class="sp-img-placeholder">Drop artwork</div>
+              </div>
+              <div class="art-cell">
+                <img
+                  src=""
+                  alt="Artwork 4 — replace with your asset"
+                  class="sp-img hover-zoom"
+                />
+                <div class="sp-img-placeholder">Drop artwork</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MAIN (post-sticky sections) ──────────────── -->
+    <main class="container" id="main">
+      <!-- ── 05 · ABOUT ─────────────────────────────── -->
+      <section class="about-section reveal-up">
+        <div class="section-head">
+          <span class="section-num">05</span>
+          <span class="section-line" aria-hidden="true"></span>
+          <h2 class="section-title">About This World</h2>
+        </div>
+        <div class="about-grid">
+          <div class="about-text">
+            <blockquote class="about-quote">
+              "Every system I build is a world. Every world is a system. The
+              line between reality and construction is where I live."
+              <cite>— BAMBI</cite>
+            </blockquote>
+            <p class="about-body">
+              <!-- ↓ REPLACE: Add your world-building philosophy / creative bio here -->
+              Insert your description of your world-building practice, creative
+              philosophy, and artistic vision here. Talk about your process,
+              your influences, and what drives your work across worlds,
+              concepts, motion, and fine art.
+            </p>
+          </div>
+          <div class="about-portrait">
+            <!-- ↓ REPLACE: add src="assets/images/portrait.jpg" -->
+            <img
+              src=""
+              alt="BAMBI portrait — replace with your photo"
+              class="about-img hover-zoom"
+            />
+            <div class="sp-img-placeholder">Drop portrait here</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── CONNECT (CTA) ─────────────────────────── -->
+      <section class="cta-band reveal-up">
+        <div class="cta-inner">
+          <p class="cta-eyebrow">— Collaborations &amp; Commissions</p>
+          <h2 class="cta-headline">EXPLORE THE<br />WORLD OF BAMBI</h2>
+          <p class="cta-sub">
+            World building &nbsp;·&nbsp; Digital concepts &nbsp;·&nbsp; Motion
+            &nbsp;·&nbsp; Fine art
+          </p>
+          <div class="cta-actions">
+            <!-- ↓ REPLACE href="mailto:" with your email -->
+            <a href="mailto:" class="btn-primary">Get In Touch</a>
+            <a href="https://solo.to/bambi.us" class="btn-ghost" target="_blank" rel="noopener"
+              >View All Links ↗</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- ── FOOTER ─────────────────────────────────── -->
+      <footer class="site-footer reveal-up">
+        <div class="footer-top">
+          <div class="footer-brand-col">
+            <a href="index.html" class="footer-brand">BAMBI WORLD</a>
+            <p class="footer-tag">
+              Systems &nbsp;·&nbsp; Worlds &nbsp;·&nbsp; Visions
+            </p>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-col-title">Projects</h4>
+            <a href="#sp-worlds" class="footer-link">World Building</a>
+            <a href="#sp-concepts" class="footer-link">Concepts</a>
+            <a href="#sp-motion" class="footer-link">Motion</a>
+            <a href="#sp-art" class="footer-link">Fine Art</a>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-col-title">Social</h4>
+            <!-- ↓ REPLACE each href="#" with your actual social URLs -->
+            <a href="#" class="footer-link" target="_blank" rel="noopener"
+              >Instagram</a
+            >
+            <a href="#" class="footer-link" target="_blank" rel="noopener"
+              >YouTube</a
+            >
+            <a href="#" class="footer-link" target="_blank" rel="noopener"
+              >TikTok</a
+            >
+            <a href="#" class="footer-link" target="_blank" rel="noopener"
+              >Twitter / X</a
+            >
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-col-title">Contact</h4>
+            <a href="https://solo.to/bambi.us" class="footer-link" target="_blank" rel="noopener"
+              >solo.to/bambi.us ↗</a
+            >
+            <!-- ↓ REPLACE mailto: with your email -->
+            <a href="mailto:" class="footer-link">Email</a>
+            <!-- ↓ REPLACE mailto: with your booking email -->
+            <a href="mailto:" class="footer-link">Booking</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span class="footer-copy"
+            >© 2026 BAMBI &nbsp;·&nbsp; All rights reserved</span
+          >
+          <div class="footer-bottom-links">
+            <a href="index.html">Home</a>
+            <a href="music.html">Music</a>
+            <a href="design.html">Design</a>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>

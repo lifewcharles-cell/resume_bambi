@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BAMBI | Project</title>
+  <link rel="stylesheet" href="project.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda+SC:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor-inner"></div></div>
+
+  <nav class="proj-nav">
+    <a href="javascript:history.back()" class="proj-back">← Back</a>
+    <a href="index.html" class="proj-brand">BAMBI</a>
+  </nav>
+
+  <!-- Full-bleed hero image / video -->
+  <header class="proj-hero">
+    <div class="proj-hero-media">
+      <!-- ↓ REPLACE: uncomment and add your hero image or video path -->
+      <!-- <img src="assets/images/project-hero.jpg" alt="Project name" class="proj-hero-img"/> -->
+      <!-- <video src="assets/video/project.mp4" autoplay muted loop playsinline class="proj-hero-img"></video> -->
+      <div class="proj-hero-placeholder">Drop hero image or video here</div>
+    </div>
+    <div class="proj-hero-overlay">
+      <p class="proj-eyebrow">
+        <!-- ↓ REPLACE: e.g. "Graphic Design · 2026" -->
+        Category &nbsp;·&nbsp; Year
+      </p>
+      <h1 class="proj-title">
+        <!-- ↓ REPLACE with your project title -->
+        Project Title
+      </h1>
+    </div>
+  </header>
+
+  <main class="proj-body">
+
+    <!-- Two-column: media left, info right -->
+    <div class="proj-split">
+      <div class="proj-media-col">
+        <div class="proj-img-block">
+          <!-- ↓ REPLACE src -->
+          <!-- <img src="assets/images/project-01.jpg" alt="" class="proj-img"/> -->
+          <div class="proj-img-placeholder">Drop image here</div>
+        </div>
+        <div class="proj-img-block">
+          <!-- <img src="assets/images/project-02.jpg" alt="" class="proj-img"/> -->
+          <div class="proj-img-placeholder">Drop image here</div>
+        </div>
+      </div>
+
+      <div class="proj-info-col">
+        <div class="proj-meta-row">
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Client</span>
+            <!-- ↓ REPLACE -->
+            <span class="proj-meta-val">— Client name</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Year</span>
+            <span class="proj-meta-val">2026</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Role</span>
+            <!-- ↓ REPLACE -->
+            <span class="proj-meta-val">— Your role here</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Type</span>
+            <!-- ↓ REPLACE: e.g. "Identity System", "Motion Design", "DJ Set" -->
+            <span class="proj-meta-val">— Project type</span>
+          </div>
+        </div>
+
+        <p class="proj-desc">
+          <!-- ↓ REPLACE with your project description -->
+          Describe the project, the concept, the process. What problem did you solve? What was the creative challenge? Write 2–4 sentences that tell the story behind this work.
+        </p>
+
+        <div class="proj-links">
+          <!-- ↓ REPLACE href="#" with live URL, Behance, Spotify, SoundCloud, etc. -->
+          <a href="#" class="proj-link" target="_blank" rel="noopener">View Live ↗</a>
+          <a href="#" class="proj-link" target="_blank" rel="noopener">Behance ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional gallery images -->
+    <div class="proj-gallery">
+      <!-- ↓ REPLACE: add src to each img -->
+      <div class="proj-img-placeholder wide">Drop wide image here</div>
+      <div class="proj-gallery-pair">
+        <div class="proj-img-placeholder">Drop image</div>
+        <div class="proj-img-placeholder">Drop image</div>
+      </div>
+    </div>
+
+    <!-- Next project link -->
+    <div class="proj-next">
+      <!-- ↓ REPLACE href with next project page URL -->
+      <a href="#" class="proj-next-link">
+        <span class="proj-next-label">Next Project</span>
+        <span class="proj-next-arrow">→</span>
+        <!-- ↓ REPLACE with next project title -->
+        <span class="proj-next-title">— Next project title</span>
+      </a>
+    </div>
+
+  </main>
+
+  <script>
+    // Cursor
+    (function() {
+      const c = document.getElementById("cursor");
+      if (!c) return;
+      let cx=0,cy=0,mx=0,my=0;
+      document.addEventListener("mousemove",e=>{mx=e.clientX;my=e.clientY;});
+      const inner=c.querySelector(".cursor-inner");
+      function loop(){
+        cx+=(mx-cx)*0.12;cy+=(my-cy)*0.12;
+        c.style.left=cx+"px";c.style.top=cy+"px";
+        if(inner){inner.style.left=(mx-cx)+"px";inner.style.top=(my-cy)+"px";}
+        requestAnimationFrame(loop);
+      }
+      loop();
+      document.querySelectorAll("a,button").forEach(el=>{
+        el.addEventListener("mouseenter",()=>document.body.classList.add("cursor-hover"));
+        el.addEventListener("mouseleave",()=>document.body.classList.remove("cursor-hover"));
+      });
+    })();
+  </script>
+</body>
+</html>

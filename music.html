@@ -1,10 +1,11 @@
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>BAMBI music</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BAMBI | Music</title>
     <link rel="stylesheet" href="redesign.css" />
-
+    <script defer src="music.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -12,87 +13,636 @@
       rel="stylesheet"
     />
   </head>
-
   <body>
-    <div class="grain"></div>
-    <!-- NAV (FLOATING MINIMAL) -->
-    <nav>
-      <div class="nav-inner">
-        <h1>BAMBI MUSIC</h1>
-        <div class="nav-links">
-          <a href="#music">Music</a>
-          <a href="#tour">Tour</a>
-          <a href="#about">About</a>
+    <!-- ── LOADER ──────────────────────────────────── -->
+    <div id="loader" class="loader" aria-hidden="true">
+      <div class="loader-line loader-line--top"></div>
+      <div class="loader-content">
+        <!-- EQ visualizer bars — music page loader -->
+        <div class="loader-eq" aria-hidden="true">
+          <span class="eq-bar" style="--i:0"></span>
+          <span class="eq-bar" style="--i:1"></span>
+          <span class="eq-bar" style="--i:2"></span>
+          <span class="eq-bar" style="--i:3"></span>
+          <span class="eq-bar" style="--i:4"></span>
+          <span class="eq-bar" style="--i:5"></span>
+          <span class="eq-bar" style="--i:6"></span>
+          <span class="eq-bar" style="--i:7"></span>
+        </div>
+        <!-- Hidden kamon svg (keep for JS reference elsewhere) -->
+        <div style="display:none" aria-hidden="true"><svg viewBox="0 0 80 80" width="56" height="56">
+            <g class="lk-ring-a">
+              <ellipse cx="40" cy="11" rx="2.5" ry="8" fill="currentColor" />
+              <ellipse
+                cx="40"
+                cy="11"
+                rx="2.5"
+                ry="8"
+                fill="currentColor"
+                transform="rotate(45 40 40)"
+              />
+              <ellipse
+                cx="40"
+                cy="11"
+                rx="2.5"
+                ry="8"
+                fill="currentColor"
+                transform="rotate(90 40 40)"
+              />
+              <ellipse
+                cx="40"
+                cy="11"
+                rx="2.5"
+                ry="8"
+                fill="currentColor"
+                transform="rotate(135 40 40)"
+              />
+              <ellipse
+                cx="40"
+                cy="11"
+                rx="2.5"
+                ry="8"
+                fill="currentColor"
+                transform="rotate(180 40 40)"
+              />
+              <ellipse
+                cx="40"
+                cy="11"
+                rx="2.5"
+                ry="8"
+                fill="currentColor"
+                transform="rotate(225 40 40)"
+              />
+              <ellipse
+                cx="40"
+                cy="11"
+                rx="2.5"
+                ry="8"
+                fill="currentColor"
+                transform="rotate(270 40 40)"
+              />
+              <ellipse
+                cx="40"
+                cy="11"
+                rx="2.5"
+                ry="8"
+                fill="currentColor"
+                transform="rotate(315 40 40)"
+              />
+            </g>
+            <g class="lk-ring-b">
+              <ellipse cx="40" cy="20" rx="1.8" ry="5.5" fill="currentColor" />
+              <ellipse
+                cx="40"
+                cy="20"
+                rx="1.8"
+                ry="5.5"
+                fill="currentColor"
+                transform="rotate(60 40 40)"
+              />
+              <ellipse
+                cx="40"
+                cy="20"
+                rx="1.8"
+                ry="5.5"
+                fill="currentColor"
+                transform="rotate(120 40 40)"
+              />
+              <ellipse
+                cx="40"
+                cy="20"
+                rx="1.8"
+                ry="5.5"
+                fill="currentColor"
+                transform="rotate(180 40 40)"
+              />
+              <ellipse
+                cx="40"
+                cy="20"
+                rx="1.8"
+                ry="5.5"
+                fill="currentColor"
+                transform="rotate(240 40 40)"
+              />
+              <ellipse
+                cx="40"
+                cy="20"
+                rx="1.8"
+                ry="5.5"
+                fill="currentColor"
+                transform="rotate(300 40 40)"
+              />
+            </g>
+            <circle cx="40" cy="40" r="4" fill="currentColor" />
+          </svg></div>
+        <h1 class="loader-logo">BAMBI</h1>
+        <p class="loader-tagline">
+          Flavor &nbsp;·&nbsp; with &nbsp;·&nbsp; Friction
+        </p>
+        <div class="loader-progress-track">
+          <div class="loader-progress-fill" id="loaderProgress"></div>
+        </div>
+      </div>
+      <div class="loader-line loader-line--bottom"></div>
+    </div>
+
+    <!-- ── CANVAS BACKGROUND ─────────────────────── -->
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <!-- CRT scanline overlay — y2k/industrial texture -->
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <!-- ── GRAIN ─────────────────────────────────── -->
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- ── CUSTOM CURSOR ──────────────────────────── -->
+    <div class="cursor" id="cursor" aria-hidden="true">
+      <div class="cursor-inner"></div>
+    </div>
+
+    <!-- ── MOUSE GLOW ──────────────────────────────── -->
+    <div class="mouse-glow" id="mouseGlow" aria-hidden="true"></div>
+
+    <!-- ── NAV ─────────────────────────────────────── -->
+    <nav class="site-nav" aria-label="Main navigation">
+      <div class="nav-inner nav-inner--three">
+        <a href="index.html" class="nav-brand">BAMBI</a>
+
+        <!-- Centre section links -->
+        <div class="nav-sections" aria-label="Page sections">
+          <a href="#about" class="nav-sec-link">About</a>
+          <span class="nav-sec-dot" aria-hidden="true">·</span>
+          <a href="#music" class="nav-sec-link">Releases</a>
+          <span class="nav-sec-dot" aria-hidden="true">·</span>
+          <a href="#tour" class="nav-sec-link">Live</a>
+          <span class="nav-sec-dot" aria-hidden="true">·</span>
+          <a href="mailto:" class="nav-sec-link">
+            <!-- ↓ REPLACE mailto: with your booking/contact email -->
+            Contact
+          </a>
+        </div>
+
+        <button class="ham-btn" id="hamBtn" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="neural-nav" aria-label="Site sections">
+          <a
+            href="music.html"
+            class="nn-node nn-music nn-active"
+            aria-label="Music"
+          >
+            <span class="nn-dot"></span><span class="nn-label">Music</span>
+          </a>
+          <div class="nn-wire" aria-hidden="true">
+            <div class="nn-pulse"></div>
+          </div>
+          <a href="design.html" class="nn-node nn-design" aria-label="Design">
+            <span class="nn-dot"></span><span class="nn-label">Design</span>
+          </a>
+          <div class="nn-wire" aria-hidden="true">
+            <div class="nn-pulse"></div>
+          </div>
+          <a href="world.html" class="nn-node nn-world" aria-label="World">
+            <span class="nn-dot"></span><span class="nn-label">World</span>
+          </a>
         </div>
       </div>
     </nav>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <a href="index.html"   class="mob-link">Home</a>
+      <a href="#music"       class="mob-link">Releases</a>
+      <a href="#tour"        class="mob-link">Live</a>
+      <a href="design.html"  class="mob-link">Design</a>
+      <a href="world.html"   class="mob-link">World</a>
+      <a href="https://solo.to/bambi.us" class="mob-link" target="_blank">All Links ↗</a>
+    </div>
 
-    <!-- HERO -->
-    <section class="hero">
-      <!-- DARK OVERLAY -->
-      <div class="overlay"></div>
-
-      <!-- FLOATING LIGHT ORB -->
-      <div class="orb"></div>
-
+    <!-- ── HERO ─────────────────────────────────────── -->
+    <section class="hero" id="hero">
+      <div class="hero-vignette" aria-hidden="true"></div>
+      <div class="hero-ring hero-ring--1" aria-hidden="true"></div>
+      <div class="hero-ring hero-ring--2" aria-hidden="true"></div>
+      <div class="hero-ring hero-ring--3" aria-hidden="true"></div>
+      <span class="hero-bg-num" aria-hidden="true">B.</span>
       <div class="hero-content">
-        <p class="tag">welcome</p>
-        <h2>WE ARE FREE</h2>
-        <button>Listen Now</button>
-      </div>
-    </section>
-    <p class="release-title">NEW Release</p>
-    <!-- MUSIC / PLAYER -->
-    <section id="music" class="music">
-      <div class="vertical-space"></div>
-      <div class="music-grid">
-        <div class="player">
-          <iframe
-            title="Spotify music player"
-            src="https://open.spotify.com/embed/track/2Qdvu7Bcw2BfFoJo7ovRHk?utm_source=generator"
-            width="100%"
-            height="152"
-            style="border: none; border-radius: 8px"
-            allow="
-              autoplay;
-              clipboard-write;
-              encrypted-media;
-              fullscreen;
-              picture-in-picture;
-            "
+        <p class="hero-eyebrow">BAMBI &nbsp;·&nbsp; DJ &amp; PRODUCER</p>
+        <h1 class="hero-title">
+          <span class="ht-line">TAKE A</span>
+          <span class="ht-line ht-line--offset">JOURNEY</span>
+        </h1>
+        <p class="hero-sub">
+          HARDGROOVE &nbsp;·&nbsp; HARDTECHNO &nbsp;·&nbsp; SCHRANZ
+        </p>
+        <div class="hero-actions">
+          <a href="#music" class="btn-primary">Listen Now</a>
+          <a href="https://open.spotify.com/artist/1I42x8SJ0E1udvNZ0Qu3cd" class="btn-ghost" target="_blank" rel="noopener"
+            >Spotify ↗</
           >
-          </iframe>
         </div>
-
-        <div class="tracklist">
-          <h3>Releases</h3>
-          <p>EP 01 — 2026</p>
-          <p>Album 02 — 2025</p>
-          <p>Single — 2024</p>
-        </div>
+      </div>
+      <div class="hero-scroll" aria-hidden="true">
+        <div class="hero-scroll-line"></div>
+        <span class="hero-scroll-label">Scroll</span>
       </div>
     </section>
 
-    <!-- TOUR -->
-    <section id="tour" class="tour">
-      <h3>Upcoming</h3>
-      <div class="tour-list">
-        <div class="show">Berlin — TBD</div>
-        <div class="show">NYC — TBD</div>
-        <div class="show">Tokyo — TBD</div>
+    <!-- ── MARQUEE ───────────────────────────────────── -->
+    <div class="marquee-bar" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Tension</span><span class="dot">·</span> <span>Repetition</span
+        ><span class="dot">·</span> <span>Controlled Chaos</span
+        ><span class="dot">·</span> <span>Sound</span><span class="dot">·</span>
+        <span>Rhythm</span><span class="dot">·</span> <span>Movement</span
+        ><span class="dot">·</span> <span>Innovation</span
+        ><span class="dot">·</span> <span>Depth</span><span class="dot">·</span>
+        <span>Speed</span><span class="dot">·</span> <span>Precision</span
+        ><span class="dot">·</span>
+        <!-- duplicate for seamless loop -->
+        <span>Tension</span><span class="dot">·</span> <span>Repetition</span
+        ><span class="dot">·</span> <span>Controlled Chaos</span
+        ><span class="dot">·</span> <span>Sound</span><span class="dot">·</span>
+        <span>Rhythm</span><span class="dot">·</span> <span>Movement</span
+        ><span class="dot">·</span> <span>Innovation</span
+        ><span class="dot">·</span> <span>Depth</span><span class="dot">·</span>
+        <span>Speed</span><span class="dot">·</span> <span>Precision</span
+        ><span class="dot">·</span>
       </div>
-    </section>
+    </div>
 
-    <!-- ABOUT -->
-    <section id="about" class="about">
-      <p>
-        BAMBI operates within the darker edges of sounds, tension, repetition,
-        and controlled chaos.
-      </p>
-    </section>
+    <!-- ── MAIN ─────────────────────────────────────── -->
+    <main class="container" id="main">
+      <!-- ── 00 · STREAM ───────────────────────────── -->
+      <section class="work-section reveal" id="music">
+        <div class="section-header">
+          <span class="section-num">00</span>
+          <div class="section-line"></div>
+          <h2 class="section-title">Stream</h2>
+        </div>
+        <p class="section-sub">Find BAMBI on every platform.</p>
 
-    <footer>
-      <p>© BAMBI music</p>
-    </footer>
+        <div class="platform-grid">
+          <div class="platform-embed reveal reveal-d1">
+            <!-- Spotify artist profile — shows top tracks + follow -->
+            <iframe
+              data-testid="embed-iframe"
+              style="border-radius:12px; display:block"
+              src="https://open.spotify.com/embed/artist/1I42x8SJ0E1udvNZ0Qu3cd?utm_source=generator"
+              width="100%"
+              height="352"
+              frameBorder="0"
+              allowfullscreen=""
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+            ></iframe>
+          </div>
+          <div class="platform-links reveal reveal-d2">
+            <!-- ↓ REPLACE each href="#" with your actual streaming platform URLs -->
+            <a href="#" class="platform-btn" target="_blank" rel="noopener">
+              <!-- ↓ REPLACE with your Spotify artist URL -->
+              ♫ Spotify ↗
+            </a>
+            <a href="https://on.soundcloud.com/dyiOszXDgXcOh7BJP9" class="platform-btn" target="_blank" rel="noopener">
+              ☁ SoundCloud ↗
+            </a>
+            <a href="#" class="platform-btn" target="_blank" rel="noopener">
+              <!-- ↓ REPLACE with your Apple Music URL -->
+              ♪ Apple Music ↗
+            </a>
+            <a href="#" class="platform-btn" target="_blank" rel="noopener">
+              <!-- ↓ REPLACE with your Beatport URL -->
+              ◈ Beatport ↗
+            </a>
+            <a
+              href="https://solo.to/bambi.us"
+              class="platform-btn platform-btn--solo"
+              target="_blank"
+              rel="noopener"
+            >
+              ◉ All Links · solo.to/bambi.us ↗
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 01 · NEW RELEASE ──────────────────────── -->
+      <section class="work-section reveal">
+        <div class="section-header">
+          <span class="section-num">01</span>
+          <div class="section-line"></div>
+          <h2 class="section-title">New Release</h2>
+        </div>
+
+        <div class="featured-grid">
+          <div class="featured-player reveal reveal-d1">
+            <!-- Track: We Are Free -->
+            <iframe
+              data-testid="embed-iframe"
+              style="border-radius:12px; display:block"
+              src="https://open.spotify.com/embed/track/37xcxtQeF41uZ7IfX4KO78?utm_source=generator"
+              width="100%"
+              height="352"
+              frameBorder="0"
+              allowfullscreen=""
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+            ></iframe>
+            <a href="https://on.soundcloud.com/dyiOszXDgXcOh7BJP9" class="sc-link" target="_blank" rel="noopener">
+              Listen on SoundCloud ↗
+            </a>
+          </div>
+
+          <div class="featured-info reveal reveal-d2">
+            <p class="release-label">EP 01 &nbsp;·&nbsp; 2026</p>
+            <h3 class="release-name">We Are Free</h3>
+            <p class="release-meta">
+              6 Tracks &nbsp;·&nbsp; Electronic &nbsp;·&nbsp; Experimental
+            </p>
+            <p class="release-desc">
+              A sonic meditation on movement, tension, and release. Dark,
+              immersive, and uncompromising.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 02 · CATALOGUE ────────────────────────── -->
+      <section class="work-section reveal">
+        <div class="section-header">
+          <span class="section-num">02</span>
+          <div class="section-line"></div>
+          <h2 class="section-title">Catalogue</h2>
+        </div>
+
+        <div class="release-list">
+          <div class="release-row reveal reveal-d1">
+            <span class="rr-num">001</span>
+            <span class="rr-title">EP 01 — We Are Free</span>
+            <span class="rr-year">2026</span>
+            <span class="rr-type">EP</span>
+            <!-- ↓ REPLACE href="#" with Spotify or SoundCloud URL for this release -->
+            <a
+              href="#"
+              class="rr-link"
+              target="_blank"
+              rel="noopener"
+              aria-label="Listen"
+              >↗</a
+            >
+          </div>
+          <div class="release-row reveal reveal-d2">
+            <span class="rr-num">002</span>
+            <!-- ↓ REPLACE with your actual album/EP title -->
+            <span class="rr-title">— Release title</span>
+            <span class="rr-year">2025</span>
+            <span class="rr-type">Album</span>
+            <!-- ↓ REPLACE href="#" with Spotify or SoundCloud URL -->
+            <a
+              href="#"
+              class="rr-link"
+              target="_blank"
+              rel="noopener"
+              aria-label="Listen"
+              >↗</a
+            >
+          </div>
+          <div class="release-row reveal reveal-d3">
+            <span class="rr-num">003</span>
+            <!-- ↓ REPLACE with your actual single title -->
+            <span class="rr-title">— Release title</span>
+            <span class="rr-year">2024</span>
+            <span class="rr-type">Single</span>
+            <!-- ↓ REPLACE href="#" with Spotify or SoundCloud URL -->
+            <a
+              href="#"
+              class="rr-link"
+              target="_blank"
+              rel="noopener"
+              aria-label="Listen"
+              >↗</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 03 · MIX SETS ─────────────────────────── -->
+      <section class="work-section reveal">
+        <div class="section-header">
+          <span class="section-num">03</span>
+          <div class="section-line"></div>
+          <h2 class="section-title">Mix Sets</h2>
+        </div>
+
+        <div class="mix-grid">
+          <div class="mix-card reveal reveal-d1">
+            <div class="mix-platform">SoundCloud</div>
+            <h3 class="mix-title">BAMBI @ Divergence 2ND ANNIVERSARY</h3>
+            <iframe width="100%" height="300" scrolling="no" frameborder="no"
+              allow="autoplay; encrypted-media"
+              src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2227341314&color=%23f50d57&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
+              style="border-radius:6px; display:block"
+            ></iframe>
+            <div class="mix-sc-meta">
+              <a href="https://soundcloud.com/lifewithcharles" target="_blank" rel="noopener">BAMBI (US)</a>
+              &nbsp;·&nbsp;
+              <a href="https://soundcloud.com/lifewithcharles/bambi-divergence-2nd-anniversary" target="_blank" rel="noopener">NYC · 12•5•25</a>
+            </div>
+            <a href="https://soundcloud.com/lifewithcharles/bambi-divergence-2nd-anniversary" class="mix-link" target="_blank" rel="noopener">Listen ↗</a>
+          </div>
+          <div class="mix-card reveal reveal-d2">
+            <div class="mix-platform">SoundCloud</div>
+            <h3 class="mix-title">BAMBI @ CONCEPT 47: New Era</h3>
+            <iframe width="100%" height="300" scrolling="no" frameborder="no"
+              allow="autoplay; encrypted-media"
+              src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2163215127&color=%23f50d57&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
+              style="border-radius:6px; display:block"
+            ></iframe>
+            <div class="mix-sc-meta">
+              <a href="https://soundcloud.com/lifewithcharles" target="_blank" rel="noopener">BAMBI (US)</a>
+              &nbsp;·&nbsp;
+              <a href="https://soundcloud.com/lifewithcharles/bambi-concept-47-new-era" target="_blank" rel="noopener">ANGY KORE · 8•22•25</a>
+            </div>
+            <a href="https://soundcloud.com/lifewithcharles/bambi-concept-47-new-era" class="mix-link" target="_blank" rel="noopener">Listen ↗</a>
+          </div>
+          <div class="mix-card reveal reveal-d3">
+            <div class="mix-platform">Spotify</div>
+            <h3 class="mix-title">BAMBI — Tracks</h3>
+            <!-- Second Spotify track -->
+            <iframe
+              data-testid="embed-iframe"
+              style="border-radius:6px; display:block"
+              src="https://open.spotify.com/embed/track/4pNJeOvdJVH5Zvaq4lSpQj?utm_source=generator"
+              width="100%" height="166"
+              frameBorder="0" allowfullscreen=""
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+            ></iframe>
+            <a href="https://open.spotify.com/artist/1I42x8SJ0E1udvNZ0Qu3cd" class="mix-link" target="_blank" rel="noopener">Spotify ↗</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 04 · LIVE ──────────────────────────────── -->
+      <section class="work-section reveal" id="tour">
+        <div class="section-header">
+          <span class="section-num">04</span>
+          <div class="section-line"></div>
+          <h2 class="section-title">Live</h2>
+        </div>
+
+        <div class="tour-list">
+          <div class="show-row reveal reveal-d1">
+            <span class="show-date">TBD 2026</span>
+            <div class="show-info">
+              <span class="show-city">Berlin</span>
+              <span class="show-venue">Venue TBA</span>
+            </div>
+            <!-- ↓ REPLACE href="#" with ticket / RSVP link -->
+            <a href="#" class="show-cta">Notify Me</a>
+          </div>
+          <div class="show-row reveal reveal-d2">
+            <span class="show-date">TBD 2026</span>
+            <div class="show-info">
+              <span class="show-city">New York</span>
+              <span class="show-venue">Venue TBA</span>
+            </div>
+            <!-- ↓ REPLACE href="#" with ticket / RSVP link -->
+            <a href="#" class="show-cta">Notify Me</a>
+          </div>
+          <div class="show-row reveal reveal-d3">
+            <span class="show-date">TBD 2026</span>
+            <div class="show-info">
+              <span class="show-city">Tokyo</span>
+              <span class="show-venue">Venue TBA</span>
+            </div>
+            <!-- ↓ REPLACE href="#" with ticket / RSVP link -->
+            <a href="#" class="show-cta">Notify Me</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 05 · ABOUT ─────────────────────────────── -->
+      <section class="work-section about-section reveal" id="about">
+        <div class="section-header">
+          <span class="section-num">05</span>
+          <div class="section-line"></div>
+          <h2 class="section-title">About</h2>
+        </div>
+
+        <div class="about-inner">
+          <span class="about-quote-mark" aria-hidden="true">"</span>
+          <blockquote class="about-quote reveal reveal-d2">
+            BAMBI is a defining force in New York City's new underground wave an
+            artist driven by intention, movement, and identity. Born and raised
+            in NYC with Colombian roots, he channels raw pressure of urban and
+            deep rhythmic upbringings "Flavor with Friction" a charged interplay
+            of groove and aggression, control and release. For BAMBI, music is
+            physical. Shaped by his background as both a dancer and producer,
+            his approach is instinctively precise built on flow, tension, and
+            impact. His sound refuses to sit still, moving between depth,
+            break-driven momentum, and explosive intensity, always guided by
+            feeling rather than formula. Behind the decks, balancing grit with
+            elegance, chaos with control crafting sets that hit the body as much
+            as the mind. His momentum has carried him across many different
+            states in the US, while reaching overseas to Amsterdam, performing a
+            set at ADE. He's shared stages with Julian Jeweil, Tonal Theory,
+            Triptykh, In Verruf, Angy Kore, Dasstudach and many more while
+            gaining support from platforms and labels like Raver Ground, Dirty
+            Techno, Techno Inc., Insomniac, Undertone, Agape, Concept 47, and
+            radio features on Black Room, tiny studio and beyond. More than a
+            DJ, BAMBI is a conceptual artist using rhythm as language and
+            tension as storytelling.
+          </blockquote>
+        </div>
+      </section>
+
+      <!-- ── 06 · CONNECT (CTA) ────────────────────── -->
+      <section class="cta-band reveal">
+        <div class="cta-inner">
+          <p class="cta-eyebrow">— Available for bookings &amp; collabs</p>
+          <h2 class="cta-headline">BOOK. COLLABORATE.<br />CREATE.</h2>
+          <p class="cta-sub">Dark energy. Precision grooves. No compromises.</p>
+          <div class="cta-actions">
+            <!-- ↓ REPLACE href="mailto:" with your booking email -->
+            <a href="mailto:" class="btn-primary">Booking Inquiry</a>
+            <a href="https://solo.to/bambi.us" class="btn-ghost" target="_blank" rel="noopener"
+              >View All Links ↗</
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- ── FOOTER ─────────────────────────────────── -->
+      <footer class="site-footer">
+        <div class="footer-top">
+          <div class="footer-brand-col">
+            <a href="index.html" class="footer-brand">BAMBI</a>
+            <p class="footer-tag">
+              Flavor &nbsp;·&nbsp; with &nbsp;·&nbsp; Friction
+            </p>
+            <p class="footer-city">New York City</p>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-col-title">Music</h4>
+            <!-- ↓ REPLACE each href="#" with your actual platform URLs -->
+            <a href="#" class="footer-link" target="_blank" rel="noopener"
+              >Spotify</a
+            >
+            <a href="https://on.soundcloud.com/dyiOszXDgXcOh7BJP9" class="footer-link" target="_blank" rel="noopener">SoundCloud</a>
+            <a href="#" class="footer-link" target="_blank" rel="noopener"
+              >Apple Music</a
+            >
+            <a href="#" class="footer-link" target="_blank" rel="noopener"
+              >Beatport</a
+            >
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-col-title">Social</h4>
+            <!-- ↓ REPLACE each href="#" with your actual social URLs -->
+            <a href="#" class="footer-link" target="_blank" rel="noopener"
+              >Instagram</a
+            >
+            <a href="#" class="footer-link" target="_blank" rel="noopener"
+              >Twitter / X</a
+            >
+            <a href="#" class="footer-link" target="_blank" rel="noopener"
+              >Facebook</a
+            >
+            <a href="#" class="footer-link" target="_blank" rel="noopener"
+              >YouTube</a
+            >
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-col-title">Contact</h4>
+            <a href="https://open.spotify.com/artist/1I42x8SJ0E1udvNZ0Qu3cd" class="footer-link" target="_blank" rel="noopener"
+              >Spotify Artist</a
+            >
+            <!-- ↓ REPLACE mailto: with your booking email -->
+            <a href="mailto:" class="footer-link">Booking</a>
+            <a href="#" class="footer-link">Press Kit</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span class="footer-copy"
+            >© 2026 BAMBI &nbsp;·&nbsp; All rights reserved</span
+          >
+          <div class="footer-nav">
+            <a href="index.html">Home</a>
+            <a href="design.html">Design</a>
+            <a href="world.html">World</a>
+          </div>
+        </div>
+      </footer>
+    </main>
+
+    <!-- ── AMBIENT AUDIO REACTOR ─────────────────── -->
+    <!-- Drop your ambient track at assets/audio/ambient.mp3 -->
+    <div class="ambient-player" id="ambientPlayer" title="Toggle ambient audio">
+      <button class="ambient-btn" id="ambientBtn" aria-label="Play ambient track">
+        <span class="amb-icon">♪</span>
+      </button>
+      <audio id="ambientAudio" loop preload="none">
+        <source src="assets/audio/ambient.mp3" type="audio/mpeg" />
+      </audio>
+    </div>
+
   </body>
 </html>

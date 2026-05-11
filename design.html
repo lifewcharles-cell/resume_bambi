@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BAMBI | Design</title>
+    <link rel="stylesheet" href="design.css" />
+    <script defer src="design.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda+SC:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+
+    <!-- ── LOADER ──────────────────────────────────── -->
+    <div id="loader" class="loader" aria-hidden="true">
+      <div class="loader-line loader-line--top"></div>
+      <div class="loader-content">
+        <!-- Blueprint crosshair assembles itself on load -->
+        <div class="loader-blueprint" aria-hidden="true">
+          <svg viewBox="0 0 60 60" width="60" height="60" fill="none" stroke="currentColor" stroke-width="0.9">
+            <!-- Horizontal crosshair line -->
+            <line class="bp-h" x1="0" y1="30" x2="60" y2="30"/>
+            <!-- Vertical crosshair line -->
+            <line class="bp-v" x1="30" y1="0" x2="30" y2="60"/>
+            <!-- Box draws in from top-left -->
+            <rect class="bp-box" x="14" y="14" width="32" height="32" stroke-width="0.7" opacity="0.5"/>
+            <!-- Centre dot materialises last -->
+            <circle class="bp-dot" cx="30" cy="30" r="3" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <h1 class="loader-logo">BAMBI</h1>
+        <p class="loader-tagline">Form &nbsp;·&nbsp; Function &nbsp;·&nbsp; Expression</p>
+        <div class="loader-progress-track">
+          <div class="loader-progress-fill" id="loaderProgress"></div>
+        </div>
+      </div>
+      <div class="loader-line loader-line--bottom"></div>
+    </div>
+
+    <!-- ── CANVAS ─────────────────────────────────── -->
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+    <!-- ── GRAIN ─────────────────────────────────── -->
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- ── CURSOR ────────────────────────────────── -->
+    <div class="cursor" id="cursor" aria-hidden="true">
+      <div class="cursor-inner"></div>
+    </div>
+    <div class="mouse-glow" id="mouseGlow" aria-hidden="true"></div>
+
+    <!-- ── NAV ─────────────────────────────────────── -->
+    <nav class="site-nav" aria-label="Main navigation">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-brand">BAMBI</a>
+        <button class="ham-btn" id="hamBtn" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="neural-nav" aria-label="Site sections">
+          <a href="music.html" class="nn-node nn-music" aria-label="Music">
+            <span class="nn-dot"></span><span class="nn-label">Music</span>
+          </a>
+          <div class="nn-wire" aria-hidden="true"><div class="nn-pulse"></div></div>
+          <a href="design.html" class="nn-node nn-design nn-active" aria-label="Design">
+            <span class="nn-dot"></span><span class="nn-label">Design</span>
+          </a>
+          <div class="nn-wire" aria-hidden="true"><div class="nn-pulse"></div></div>
+          <a href="world.html" class="nn-node nn-world" aria-label="World">
+            <span class="nn-dot"></span><span class="nn-label">World</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <a href="index.html"  class="mob-link">Home</a>
+      <a href="music.html"  class="mob-link">Music</a>
+      <a href="world.html"  class="mob-link">World</a>
+      <a href="#"           class="mob-link">Behance ↗</a>
+      <a href="mailto:"     class="mob-link">Email</a>
+    </div>
+
+    <!-- ── HERO (lewiszhang editorial) ───────────────── -->
+    <header class="hero reveal-up">
+      <!-- Thin vertical brutalist accent line -->
+      <div class="hero-vline" aria-hidden="true"></div>
+      <!-- Giant faint watermark -->
+      <span class="hero-bg-mark" aria-hidden="true">D.</span>
+
+      <div class="hero-content">
+        <div class="hero-meta">
+          <span class="hero-eyebrow">— Design Portfolio</span>
+          <span class="hero-year">2026</span>
+        </div>
+        <h1 class="hero-title">
+          <span class="ht-l1">FORM</span>
+          <span class="ht-l2">FUNC&shy;TION</span>
+        </h1>
+        <div class="hero-rule">
+          <div class="hero-rule-line" aria-hidden="true"></div>
+          <span class="hero-rule-label">BAMBI &nbsp;·&nbsp; GRAPHIC DESIGNER &nbsp;·&nbsp; ANIMATOR &nbsp;·&nbsp; ART DIRECTOR</span>
+        </div>
+        <p class="hero-sub">Typography &nbsp;·&nbsp; Branding &nbsp;·&nbsp; Motion &nbsp;·&nbsp; Interface &nbsp;·&nbsp; Visual Systems</p>
+      </div>
+
+      <div class="hero-scroll-corner" aria-hidden="true">
+        Scroll ↓
+        <div class="hero-scroll-line"></div>
+      </div>
+    </header>
+
+    <!-- ── MARQUEE ───────────────────────────────────── -->
+    <div class="marquee-bar" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Typography</span><span class="mdot">·</span>
+        <span>Branding</span><span class="mdot">·</span>
+        <span>Motion</span><span class="mdot">·</span>
+        <span>Grid</span><span class="mdot">·</span>
+        <span>Identity</span><span class="mdot">·</span>
+        <span>Form</span><span class="mdot">·</span>
+        <span>Space</span><span class="mdot">·</span>
+        <span>Type</span><span class="mdot">·</span>
+        <span>Concept</span><span class="mdot">·</span>
+        <span>Craft</span><span class="mdot">·</span>
+        <span>Typography</span><span class="mdot">·</span>
+        <span>Branding</span><span class="mdot">·</span>
+        <span>Motion</span><span class="mdot">·</span>
+        <span>Grid</span><span class="mdot">·</span>
+        <span>Identity</span><span class="mdot">·</span>
+        <span>Form</span><span class="mdot">·</span>
+        <span>Space</span><span class="mdot">·</span>
+        <span>Type</span><span class="mdot">·</span>
+        <span>Concept</span><span class="mdot">·</span>
+        <span>Craft</span><span class="mdot">·</span>
+      </div>
+    </div>
+
+    <!-- ── MAIN ─────────────────────────────────────── -->
+    <main class="container" id="main">
+
+      <!-- ── 01 · SELECTED WORKS ───────────────────── -->
+      <section class="work-section reveal-up">
+        <div class="section-head">
+          <span class="section-num">01</span>
+          <span class="section-line" aria-hidden="true"></span>
+          <h2 class="section-title">Selected Works</h2>
+        </div>
+
+        <div class="mag-grid">
+          <!-- Large card -->
+          <div class="mag-card mag-card--large reveal-up reveal-d1">
+            <span class="mag-num" aria-hidden="true">001</span>
+            <div class="mag-img-wrap">
+              <!-- ↓ REPLACE: add src="assets/images/your-project.jpg" alt="Project name" -->
+              <img src="" alt="Design project 1 — replace with your asset" class="mag-img" />
+              <div class="mag-img-placeholder">Drop image here</div>
+              <div class="mag-overlay"><span class="mag-overlay-label">View Project →</span></div>
+            </div>
+            <div class="mag-meta">
+              <span class="mag-cat">Graphic Design</span>
+              <!-- ↓ REPLACE href="#" with your Behance / portfolio URL for this project -->
+              <a href="#" class="mag-title-link" target="_blank" rel="noopener">— Insert project title</a>
+              <!-- ↓ REPLACE href="#" with live website URL if applicable -->
+              <a href="#" class="mag-site-link" target="_blank" rel="noopener">View Site ↗</a>
+            </div>
+          </div>
+
+          <!-- Right column — two stacked -->
+          <div class="mag-col-right">
+            <div class="mag-card reveal-up reveal-d2">
+              <span class="mag-num" aria-hidden="true">002</span>
+              <div class="mag-img-wrap">
+                <!-- ↓ REPLACE: add src="assets/images/your-project.jpg" -->
+                <img src="" alt="Design project 2 — replace with your asset" class="mag-img" />
+                <div class="mag-img-placeholder">Drop image here</div>
+                <div class="mag-overlay"><span class="mag-overlay-label">View Project →</span></div>
+              </div>
+              <div class="mag-meta">
+                <span class="mag-cat">Typography</span>
+                <!-- ↓ REPLACE href="#" with project URL -->
+                <a href="#" class="mag-title-link" target="_blank" rel="noopener">— Insert project title</a>
+              </div>
+            </div>
+            <div class="mag-card reveal-up reveal-d3">
+              <span class="mag-num" aria-hidden="true">003</span>
+              <div class="mag-img-wrap">
+                <!-- ↓ REPLACE: add src="assets/images/your-project.jpg" -->
+                <img src="" alt="Design project 3 — replace with your asset" class="mag-img" />
+                <div class="mag-img-placeholder">Drop image here</div>
+                <div class="mag-overlay"><span class="mag-overlay-label">View Project →</span></div>
+              </div>
+              <div class="mag-meta">
+                <span class="mag-cat">Branding</span>
+                <!-- ↓ REPLACE href="#" with project URL -->
+                <a href="#" class="mag-title-link" target="_blank" rel="noopener">— Insert project title</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ↓ REPLACE href="#" with your Behance or full portfolio URL -->
+        <a href="#" class="view-all-link" target="_blank" rel="noopener">View All Works →</a>
+      </section>
+
+      <!-- ── 02 · BRANDING & IDENTITY ──────────────── -->
+      <section class="work-section reveal-up">
+        <div class="section-head">
+          <span class="section-num">02</span>
+          <span class="section-line" aria-hidden="true"></span>
+          <h2 class="section-title">Branding &amp; Identity</h2>
+        </div>
+        <p class="section-sub">Full identity systems — from mark to motion to guidelines.</p>
+
+        <div class="brand-list">
+          <div class="brand-row reveal-up reveal-d1">
+            <span class="brand-num">001</span>
+            <div class="brand-info">
+              <!-- ↓ REPLACE with your actual brand project title -->
+              <h3 class="brand-name">— Brand project title</h3>
+              <p class="brand-desc">Brief description of the project / client / scope. Replace this text.</p>
+            </div>
+            <div class="brand-actions">
+              <span class="brand-tag">Identity System</span>
+              <!-- ↓ REPLACE href="#" with Behance/portfolio link for this project -->
+              <a href="#" class="brand-view" target="_blank" rel="noopener">View →</a>
+              <!-- ↓ REPLACE href="#" with live website URL if applicable -->
+              <a href="#" class="brand-site" target="_blank" rel="noopener">Site ↗</a>
+            </div>
+          </div>
+          <div class="brand-row reveal-up reveal-d2">
+            <span class="brand-num">002</span>
+            <div class="brand-info">
+              <h3 class="brand-name">— Brand project title</h3>
+              <p class="brand-desc">Brief description of the project / client / scope. Replace this text.</p>
+            </div>
+            <div class="brand-actions">
+              <span class="brand-tag">Logo &amp; Mark</span>
+              <a href="#" class="brand-view" target="_blank" rel="noopener">View →</a>
+              <a href="#" class="brand-site" target="_blank" rel="noopener">Site ↗</a>
+            </div>
+          </div>
+          <div class="brand-row reveal-up reveal-d3">
+            <span class="brand-num">003</span>
+            <div class="brand-info">
+              <h3 class="brand-name">— Brand project title</h3>
+              <p class="brand-desc">Brief description of the project / client / scope. Replace this text.</p>
+            </div>
+            <div class="brand-actions">
+              <span class="brand-tag">Brand System</span>
+              <a href="#" class="brand-view" target="_blank" rel="noopener">View →</a>
+              <a href="#" class="brand-site" target="_blank" rel="noopener">Site ↗</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 03 · MOTION DESIGN ────────────────────── -->
+      <section class="work-section reveal-up">
+        <div class="section-head">
+          <span class="section-num">03</span>
+          <span class="section-line" aria-hidden="true"></span>
+          <h2 class="section-title">Motion Design</h2>
+        </div>
+        <p class="section-sub">Animation, kinetics, and time-based graphic design.</p>
+
+        <div class="video-grid">
+          <div class="video-wrap reveal-up reveal-d1">
+            <video class="video-el" muted loop playsinline poster="">
+              <!-- ↓ REPLACE: uncomment and add your video file path -->
+              <!-- <source src="assets/video/motion-01.mp4" type="video/mp4"> -->
+            </video>
+            <div class="video-placeholder"><span>▶ Drop video here</span></div>
+            <!-- ↓ REPLACE href="#" with YouTube video or Vimeo URL -->
+            <a href="#" class="vid-link" target="_blank" rel="noopener">Watch on YouTube ↗</a>
+            <p class="work-caption">— Motion project title</p>
+          </div>
+          <div class="video-wrap reveal-up reveal-d2">
+            <video class="video-el" muted loop playsinline poster="">
+              <!-- ↓ REPLACE: uncomment and add your video file path -->
+              <!-- <source src="assets/video/motion-02.mp4" type="video/mp4"> -->
+            </video>
+            <div class="video-placeholder"><span>▶ Drop video here</span></div>
+            <a href="#" class="vid-link" target="_blank" rel="noopener">Watch on YouTube ↗</a>
+            <p class="work-caption">— Motion project title</p>
+          </div>
+        </div>
+        <!-- ↓ REPLACE href="#" with your YouTube channel URL -->
+        <a href="#" class="section-cta-link" target="_blank" rel="noopener">YouTube Channel →</a>
+      </section>
+
+      <!-- ── 04 · WEB & INTERFACE ───────────────────── -->
+      <section class="work-section reveal-up">
+        <div class="section-head">
+          <span class="section-num">04</span>
+          <span class="section-line" aria-hidden="true"></span>
+          <h2 class="section-title">Web &amp; Interface</h2>
+        </div>
+        <p class="section-sub">Digital products, UI systems, and interactive experiences.</p>
+
+        <div class="work-grid">
+          <div class="work-card reveal-up reveal-d1">
+            <div class="work-img-wrap">
+              <!-- ↓ REPLACE: add src="assets/images/web-01.jpg" -->
+              <img src="" alt="Web project 1 — replace with your asset" class="work-img" />
+              <div class="work-img-placeholder">Drop image here</div>
+              <div class="work-overlay"><span class="work-label">UI / UX</span></div>
+            </div>
+            <!-- ↓ REPLACE href="#" with live website URL -->
+            <a href="#" class="card-site-link" target="_blank" rel="noopener">View Live Site ↗</a>
+            <p class="work-caption">— Project title here</p>
+          </div>
+          <div class="work-card reveal-up reveal-d2">
+            <div class="work-img-wrap">
+              <!-- ↓ REPLACE: add src="assets/images/web-02.jpg" -->
+              <img src="" alt="Web project 2 — replace with your asset" class="work-img" />
+              <div class="work-img-placeholder">Drop image here</div>
+              <div class="work-overlay"><span class="work-label">Web Design</span></div>
+            </div>
+            <a href="#" class="card-site-link" target="_blank" rel="noopener">View Live Site ↗</a>
+            <p class="work-caption">— Project title here</p>
+          </div>
+          <div class="work-card reveal-up reveal-d3">
+            <div class="work-img-wrap">
+              <!-- ↓ REPLACE: add src="assets/images/web-03.jpg" -->
+              <img src="" alt="Web project 3 — replace with your asset" class="work-img" />
+              <div class="work-img-placeholder">Drop image here</div>
+              <div class="work-overlay"><span class="work-label">Interface</span></div>
+            </div>
+            <a href="#" class="card-site-link" target="_blank" rel="noopener">View Live Site ↗</a>
+            <p class="work-caption">— Project title here</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 05 · PROCESS ──────────────────────────── -->
+      <section class="process-section reveal-up">
+        <div class="section-head">
+          <span class="section-num">05</span>
+          <span class="section-line" aria-hidden="true"></span>
+          <h2 class="section-title">Process</h2>
+        </div>
+        <div class="process-list">
+          <div class="process-row reveal-up reveal-d1">
+            <span class="pr-idx">I</span>
+            <h3 class="pr-statement">INTENTION<br />BEFORE AESTHETICS</h3>
+            <p class="pr-note">Purpose drives form</p>
+          </div>
+          <div class="process-row reveal-up reveal-d2">
+            <span class="pr-idx">II</span>
+            <h3 class="pr-statement">TENSION AS<br />COMPOSITION</h3>
+            <p class="pr-note">Conflict creates interest</p>
+          </div>
+          <div class="process-row reveal-up reveal-d3">
+            <span class="pr-idx">III</span>
+            <h3 class="pr-statement">THE GRID<br />IS A WEAPON</h3>
+            <p class="pr-note">Structure enables freedom</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 06 · CONNECT (CTA) ────────────────────── -->
+      <section class="cta-band reveal-up">
+        <div class="cta-inner">
+          <p class="cta-eyebrow">— Available for work</p>
+          <h2 class="cta-headline">LET'S BUILD<br />SOMETHING.</h2>
+          <p class="cta-sub">Brand identity &nbsp;·&nbsp; Motion design &nbsp;·&nbsp; Web &nbsp;·&nbsp; Art direction</p>
+          <div class="cta-links">
+            <!-- ↓ REPLACE href="#" with your Behance URL -->
+            <a href="#" class="cta-platform-link" target="_blank" rel="noopener">Behance ↗</a>
+            <!-- ↓ REPLACE href="#" with your Dribbble URL -->
+            <a href="#" class="cta-platform-link" target="_blank" rel="noopener">Dribbble ↗</a>
+            <!-- ↓ REPLACE href="mailto:" with your email -->
+            <a href="mailto:" class="cta-platform-link">Email ↗</a>
+          </div>
+          <div class="cta-socials">
+            <!-- ↓ REPLACE each href="#" with your actual social URLs -->
+            <a href="#" class="cta-social" target="_blank" rel="noopener">Instagram</a>
+            <a href="#" class="cta-social" target="_blank" rel="noopener">LinkedIn</a>
+            <!-- ↓ REPLACE href="#" with your portfolio website URL -->
+            <a href="#" class="cta-social" target="_blank" rel="noopener">Website ↗</a>
+            <!-- ↓ REPLACE href="#" with your YouTube channel URL -->
+            <a href="#" class="cta-social" target="_blank" rel="noopener">YouTube ↗</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── FOOTER ─────────────────────────────────── -->
+      <footer class="site-footer reveal-up">
+        <div class="footer-top">
+          <div class="footer-brand-col">
+            <a href="index.html" class="footer-brand">BAMBI</a>
+            <p class="footer-tag">Form &nbsp;·&nbsp; Function &nbsp;·&nbsp; Expression</p>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-col-title">Work</h4>
+            <!-- ↓ REPLACE each href="#" with actual URLs -->
+            <a href="#" class="footer-link" target="_blank" rel="noopener">Behance</a>
+            <a href="#" class="footer-link" target="_blank" rel="noopener">Dribbble</a>
+            <a href="#" class="footer-link" target="_blank" rel="noopener">Portfolio Site</a>
+            <a href="#" class="footer-link" target="_blank" rel="noopener">Cargo</a>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-col-title">Contact</h4>
+            <!-- ↓ REPLACE mailto: with your email -->
+            <a href="mailto:" class="footer-link">Email</a>
+            <!-- ↓ REPLACE href="#" with Instagram URL -->
+            <a href="#" class="footer-link" target="_blank" rel="noopener">Instagram</a>
+            <!-- ↓ REPLACE href="#" with LinkedIn URL -->
+            <a href="#" class="footer-link" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-col-title">Elsewhere</h4>
+            <!-- ↓ REPLACE each href="#" with actual URLs -->
+            <a href="#" class="footer-link" target="_blank" rel="noopener">YouTube</a>
+            <a href="#" class="footer-link" target="_blank" rel="noopener">TikTok</a>
+            <a href="#" class="footer-link" target="_blank" rel="noopener">Twitter / X</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span class="footer-copy">© 2026 BAMBI &nbsp;·&nbsp; All rights reserved</span>
+          <div class="footer-bottom-links">
+            <a href="index.html">Home</a>
+            <a href="music.html">Music</a>
+            <a href="world.html">World</a>
+          </div>
+        </div>
+      </footer>
+
+    </main>
+  </body>
+</html>
