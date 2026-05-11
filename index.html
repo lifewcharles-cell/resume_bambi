@@ -22,7 +22,7 @@
       <div class="loader-line loader-line--top"></div>
       <div class="loader-content">
         <h1 class="loader-logo">BAMBI</h1>
-        <p class="loader-tagline">Flavor · with · Friction</p>
+        <p class="loader-tagline">Flavor· with · Friction</p>
         <div class="loader-progress-track">
           <div class="loader-progress-fill" id="loaderProgress"></div>
         </div>
@@ -84,11 +84,15 @@
           <a href="music.html" class="nn-node nn-music" aria-label="Music">
             <span class="nn-dot"></span><span class="nn-label">Music</span>
           </a>
-          <div class="nn-wire" aria-hidden="true"><div class="nn-pulse"></div></div>
+          <div class="nn-wire" aria-hidden="true">
+            <div class="nn-pulse"></div>
+          </div>
           <a href="design.html" class="nn-node nn-design" aria-label="Design">
             <span class="nn-dot"></span><span class="nn-label">Design</span>
           </a>
-          <div class="nn-wire" aria-hidden="true"><div class="nn-pulse"></div></div>
+          <div class="nn-wire" aria-hidden="true">
+            <div class="nn-pulse"></div>
+          </div>
           <a href="world.html" class="nn-node nn-world" aria-label="World">
             <span class="nn-dot"></span><span class="nn-label">World</span>
           </a>
@@ -104,37 +108,72 @@
 
         <!-- 3D Animated Eye Emblem — pupil tracks cursor, 3D tilt on mouse -->
         <div class="eye-wrap" id="eyeWrap" aria-label="BAMBI emblem">
-          <svg class="eye-svg" id="eyeSvg" viewBox="0 0 220 110" aria-hidden="true">
+          <svg
+            class="eye-svg"
+            id="eyeSvg"
+            viewBox="0 0 220 110"
+            aria-hidden="true"
+          >
             <defs>
               <filter id="eye-glow">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur"/>
-                <feColorMatrix in="blur" type="matrix"
-                  values="1 0 0 0 0.78  0 0.66 0 0 0.43  0 0 0.43 0 0.17  0 0 0 1 0" result="glow"/>
-                <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+                <feGaussianBlur
+                  in="SourceGraphic"
+                  stdDeviation="2.5"
+                  result="blur"
+                />
+                <feColorMatrix
+                  in="blur"
+                  type="matrix"
+                  values="1 0 0 0 0.78  0 0.66 0 0 0.43  0 0 0.43 0 0.17  0 0 0 1 0"
+                  result="glow"
+                />
+                <feMerge>
+                  <feMergeNode in="glow" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
               </filter>
               <filter id="pupil-glow">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
-                <feColorMatrix in="blur" type="matrix"
-                  values="1 0 0 0 0.77  0 0.21 0 0 0.21  0 0 0.34 0 0.14  0 0 0 1.2 0"/>
-                <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+                <feGaussianBlur
+                  in="SourceGraphic"
+                  stdDeviation="3"
+                  result="blur"
+                />
+                <feColorMatrix
+                  in="blur"
+                  type="matrix"
+                  values="1 0 0 0 0.77  0 0.21 0 0 0.21  0 0 0.34 0 0.14  0 0 0 1.2 0"
+                />
+                <feMerge>
+                  <feMergeNode />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
               </filter>
               <radialGradient id="iris-grad" cx="50%" cy="45%" r="50%">
-                <stop offset="0%"   stop-color="#c9a96e" stop-opacity="0.9"/>
-                <stop offset="55%"  stop-color="#a07838" stop-opacity="0.75"/>
-                <stop offset="100%" stop-color="#5a3a10" stop-opacity="0.6"/>
+                <stop offset="0%" stop-color="#c9a96e" stop-opacity="0.9" />
+                <stop offset="55%" stop-color="#a07838" stop-opacity="0.75" />
+                <stop offset="100%" stop-color="#5a3a10" stop-opacity="0.6" />
               </radialGradient>
               <radialGradient id="pupil-grad" cx="40%" cy="38%" r="55%">
-                <stop offset="0%"   stop-color="#1a0206"/>
-                <stop offset="100%" stop-color="#050102"/>
+                <stop offset="0%" stop-color="#1a0206" />
+                <stop offset="100%" stop-color="#050102" />
               </radialGradient>
             </defs>
 
             <!-- Outer ambient glow ring -->
-            <ellipse cx="110" cy="55" rx="106" ry="52" fill="none"
-              stroke="rgba(196,53,86,0.12)" stroke-width="1" class="eye-outer-ring"/>
+            <ellipse
+              cx="110"
+              cy="55"
+              rx="106"
+              ry="52"
+              fill="none"
+              stroke="rgba(196,53,86,0.12)"
+              stroke-width="1"
+              class="eye-outer-ring"
+            />
 
             <!-- Eye lid shape — almond -->
-            <path id="eye-lid"
+            <path
+              id="eye-lid"
               d="M 6,55 C 50,4 170,4 214,55 C 170,106 50,106 6,55 Z"
               fill="rgba(4,3,8,0.92)"
               stroke="rgba(201,169,110,0.70)"
@@ -143,52 +182,187 @@
             />
 
             <!-- Iris base fill -->
-            <circle cx="110" cy="55" r="38" fill="url(#iris-grad)" opacity="0.85"/>
+            <circle
+              cx="110"
+              cy="55"
+              r="38"
+              fill="url(#iris-grad)"
+              opacity="0.85"
+            />
 
             <!-- Iris rings (3 concentric) -->
-            <circle cx="110" cy="55" r="38" fill="none" stroke="rgba(201,169,110,0.55)" stroke-width="1.2" class="iris-ring-a"/>
-            <circle cx="110" cy="55" r="30" fill="none" stroke="rgba(201,169,110,0.30)" stroke-width="0.7"/>
-            <circle cx="110" cy="55" r="22" fill="none" stroke="rgba(201,169,110,0.20)" stroke-width="0.5"/>
+            <circle
+              cx="110"
+              cy="55"
+              r="38"
+              fill="none"
+              stroke="rgba(201,169,110,0.55)"
+              stroke-width="1.2"
+              class="iris-ring-a"
+            />
+            <circle
+              cx="110"
+              cy="55"
+              r="30"
+              fill="none"
+              stroke="rgba(201,169,110,0.30)"
+              stroke-width="0.7"
+            />
+            <circle
+              cx="110"
+              cy="55"
+              r="22"
+              fill="none"
+              stroke="rgba(201,169,110,0.20)"
+              stroke-width="0.5"
+            />
 
             <!-- Iris radial lines (12 spokes) -->
-            <g class="iris-spokes" stroke="rgba(201,169,110,0.18)" stroke-width="0.6">
-              <line x1="110" y1="19" x2="110" y2="27"/>
-              <line x1="110" y1="19" x2="110" y2="27" transform="rotate(30 110 55)"/>
-              <line x1="110" y1="19" x2="110" y2="27" transform="rotate(60 110 55)"/>
-              <line x1="110" y1="19" x2="110" y2="27" transform="rotate(90 110 55)"/>
-              <line x1="110" y1="19" x2="110" y2="27" transform="rotate(120 110 55)"/>
-              <line x1="110" y1="19" x2="110" y2="27" transform="rotate(150 110 55)"/>
-              <line x1="110" y1="19" x2="110" y2="27" transform="rotate(180 110 55)"/>
-              <line x1="110" y1="19" x2="110" y2="27" transform="rotate(210 110 55)"/>
-              <line x1="110" y1="19" x2="110" y2="27" transform="rotate(240 110 55)"/>
-              <line x1="110" y1="19" x2="110" y2="27" transform="rotate(270 110 55)"/>
-              <line x1="110" y1="19" x2="110" y2="27" transform="rotate(300 110 55)"/>
-              <line x1="110" y1="19" x2="110" y2="27" transform="rotate(330 110 55)"/>
+            <g
+              class="iris-spokes"
+              stroke="rgba(201,169,110,0.18)"
+              stroke-width="0.6"
+            >
+              <line x1="110" y1="19" x2="110" y2="27" />
+              <line
+                x1="110"
+                y1="19"
+                x2="110"
+                y2="27"
+                transform="rotate(30 110 55)"
+              />
+              <line
+                x1="110"
+                y1="19"
+                x2="110"
+                y2="27"
+                transform="rotate(60 110 55)"
+              />
+              <line
+                x1="110"
+                y1="19"
+                x2="110"
+                y2="27"
+                transform="rotate(90 110 55)"
+              />
+              <line
+                x1="110"
+                y1="19"
+                x2="110"
+                y2="27"
+                transform="rotate(120 110 55)"
+              />
+              <line
+                x1="110"
+                y1="19"
+                x2="110"
+                y2="27"
+                transform="rotate(150 110 55)"
+              />
+              <line
+                x1="110"
+                y1="19"
+                x2="110"
+                y2="27"
+                transform="rotate(180 110 55)"
+              />
+              <line
+                x1="110"
+                y1="19"
+                x2="110"
+                y2="27"
+                transform="rotate(210 110 55)"
+              />
+              <line
+                x1="110"
+                y1="19"
+                x2="110"
+                y2="27"
+                transform="rotate(240 110 55)"
+              />
+              <line
+                x1="110"
+                y1="19"
+                x2="110"
+                y2="27"
+                transform="rotate(270 110 55)"
+              />
+              <line
+                x1="110"
+                y1="19"
+                x2="110"
+                y2="27"
+                transform="rotate(300 110 55)"
+              />
+              <line
+                x1="110"
+                y1="19"
+                x2="110"
+                y2="27"
+                transform="rotate(330 110 55)"
+              />
             </g>
 
             <!-- Pupil — moves to follow cursor -->
-            <circle id="eye-pupil" cx="110" cy="55" r="17" fill="url(#pupil-grad)" filter="url(#pupil-glow)"/>
-            <circle id="eye-pupil-inner" cx="110" cy="55" r="11" fill="#040102"/>
+            <circle
+              id="eye-pupil"
+              cx="110"
+              cy="55"
+              r="17"
+              fill="url(#pupil-grad)"
+              filter="url(#pupil-glow)"
+            />
+            <circle
+              id="eye-pupil-inner"
+              cx="110"
+              cy="55"
+              r="11"
+              fill="#040102"
+            />
 
             <!-- Catchlight highlight -->
-            <ellipse id="eye-highlight" cx="118" cy="46" rx="4.5" ry="3"
-              fill="rgba(255,255,255,0.22)" transform="rotate(-18 118 46)"/>
-            <ellipse cx="104" cy="62" rx="1.8" ry="1.2"
-              fill="rgba(255,255,255,0.08)" transform="rotate(-18 104 62)"/>
+            <ellipse
+              id="eye-highlight"
+              cx="118"
+              cy="46"
+              rx="4.5"
+              ry="3"
+              fill="rgba(255,255,255,0.22)"
+              transform="rotate(-18 118 46)"
+            />
+            <ellipse
+              cx="104"
+              cy="62"
+              rx="1.8"
+              ry="1.2"
+              fill="rgba(255,255,255,0.08)"
+              transform="rotate(-18 104 62)"
+            />
 
             <!-- Upper eyelid edge — stronger line for definition -->
-            <path d="M 6,55 C 50,4 170,4 214,55"
-              fill="none" stroke="rgba(196,53,86,0.55)" stroke-width="1.4"/>
+            <path
+              d="M 6,55 C 50,4 170,4 214,55"
+              fill="none"
+              stroke="rgba(196,53,86,0.55)"
+              stroke-width="1.4"
+            />
 
             <!-- Eyebrow arc above the eye -->
-            <path class="eye-brow"
+            <path
+              class="eye-brow"
               d="M 30,22 C 70,-2 150,-2 190,22"
-              fill="none" stroke="rgba(201,169,110,0.50)" stroke-width="1.8"
-              stroke-linecap="round"/>
+              fill="none"
+              stroke="rgba(201,169,110,0.50)"
+              stroke-width="1.8"
+              stroke-linecap="round"
+            />
             <path
               d="M 38,26 C 75,5 145,5 182,26"
-              fill="none" stroke="rgba(201,169,110,0.20)" stroke-width="0.6"
-              stroke-linecap="round"/>
+              fill="none"
+              stroke="rgba(201,169,110,0.20)"
+              stroke-width="0.6"
+              stroke-linecap="round"
+            />
           </svg>
 
           <!-- Ripple rings pulse outward on hover -->
@@ -197,9 +371,14 @@
           <span class="kamon-ripple" aria-hidden="true"></span>
         </div>
 
-        <p class="tagline">Flavor &nbsp;·&nbsp; with &nbsp;·&nbsp; Friction</p>
+        <p class="tagline">World's by BAMBI</p>
 
-        <a href="https://solo.to/bambi.us" class="hero-solo-link" target="_blank" rel="noopener">
+        <a
+          href="https://solo.to/bambi.us"
+          class="hero-solo-link"
+          target="_blank"
+          rel="noopener"
+        >
           All Links &nbsp;·&nbsp; solo.to ↗
         </a>
 
@@ -262,7 +441,9 @@
             <div class="icard-ring" aria-hidden="true"></div>
             <span class="icard-icon" aria-hidden="true">◬</span>
             <span class="icard-title">World Building</span>
-            <span class="icard-sub">Fine Art · Concept · Visual Experiments</span>
+            <span class="icard-sub"
+              >Fine Art · Concept · Visual Experiments</span
+            >
             <span class="icard-dest">↗ world.bambi</span>
           </a>
         </div>
@@ -275,7 +456,13 @@
           <h2 class="cta-headline">LET'S CREATE<br />SOMETHING REAL.</h2>
           <p class="cta-sub">Music · Design · World Building · Let's talk.</p>
           <div class="cta-actions">
-            <a href="https://open.spotify.com/artist/1I42x8SJ0E1udvNZ0Qu3cd" class="cta-btn cta-btn--primary" target="_blank" rel="noopener">Spotify ↗</a>
+            <a
+              href="https://open.spotify.com/artist/1I42x8SJ0E1udvNZ0Qu3cd"
+              class="cta-btn cta-btn--primary"
+              target="_blank"
+              rel="noopener"
+              >Spotify ↗</a
+            >
             <!-- ↓ REPLACE mailto: with your booking / contact email -->
             <a href="mailto:" class="cta-btn cta-btn--ghost">Get In Touch</a>
           </div>
@@ -287,35 +474,61 @@
         <div class="footer-top">
           <div class="footer-brand-col">
             <a href="index.html" class="footer-brand">BAMBI</a>
-            <p class="footer-tag">Flavor &nbsp;·&nbsp; with &nbsp;·&nbsp; Friction</p>
+            <p class="footer-tag">
+              World's &nbsp;·&nbsp; By &nbsp;·&nbsp; Bambi
+            </p>
             <p class="footer-city">New York City</p>
           </div>
           <div class="footer-col">
             <h4 class="footer-col-title">Music</h4>
             <!-- ↓ REPLACE each href="#" with your actual platform URLs -->
-            <a href="#" class="footer-link" target="_blank" rel="noopener">Spotify</a>
-            <a href="#" class="footer-link" target="_blank" rel="noopener">SoundCloud</a>
-            <a href="#" class="footer-link" target="_blank" rel="noopener">Apple Music</a>
-            <a href="#" class="footer-link" target="_blank" rel="noopener">Beatport</a>
+            <a href="#" class="footer-link" target="_blank" rel="noopener"
+              >Spotify</a
+            >
+            <a href="#" class="footer-link" target="_blank" rel="noopener"
+              >SoundCloud</a
+            >
+            <a href="#" class="footer-link" target="_blank" rel="noopener"
+              >Apple Music</a
+            >
+            <a href="#" class="footer-link" target="_blank" rel="noopener"
+              >Beatport</a
+            >
           </div>
           <div class="footer-col">
             <h4 class="footer-col-title">Social</h4>
             <!-- ↓ REPLACE each href="#" with your actual social URLs -->
-            <a href="#" class="footer-link" target="_blank" rel="noopener">Instagram</a>
-            <a href="#" class="footer-link" target="_blank" rel="noopener">Twitter / X</a>
-            <a href="#" class="footer-link" target="_blank" rel="noopener">YouTube</a>
-            <a href="#" class="footer-link" target="_blank" rel="noopener">TikTok</a>
+            <a href="#" class="footer-link" target="_blank" rel="noopener"
+              >Instagram</a
+            >
+            <a href="#" class="footer-link" target="_blank" rel="noopener"
+              >Twitter / X</a
+            >
+            <a href="#" class="footer-link" target="_blank" rel="noopener"
+              >YouTube</a
+            >
+            <a href="#" class="footer-link" target="_blank" rel="noopener"
+              >TikTok</a
+            >
           </div>
           <div class="footer-col">
             <h4 class="footer-col-title">Contact</h4>
-            <a href="https://solo.to/bambi.us" class="footer-link" target="_blank" rel="noopener">solo.to/bambi.us ↗</a>
+            <a
+              href="https://solo.to/bambi.us"
+              class="footer-link"
+              target="_blank"
+              rel="noopener"
+              >solo.to/bambi.us ↗</a
+            >
             <!-- ↓ REPLACE mailto: with your booking email -->
             <a href="mailto:" class="footer-link">Booking</a>
             <a href="#" class="footer-link">Press Kit</a>
           </div>
         </div>
         <div class="footer-bottom">
-          <span class="footer-copy">© 2026 BAMBI &nbsp;·&nbsp; All rights reserved</span>
+          <span class="footer-copy"
+            >© 2026 BAMBI &nbsp;·&nbsp; All rights reserved</span
+          >
           <div class="footer-bottom-links">
             <a href="music.html">Music</a>
             <a href="design.html">Design</a>

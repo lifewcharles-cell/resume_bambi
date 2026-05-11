@@ -38,7 +38,7 @@
 
 /* ────────────────────────────────────────────────
    §1b · TAGLINE LETTER SPLIT
-   Splits "Flavor · with · Friction" into individual
+   Splits "World's by BAMBI" into individual
    <span> elements so CSS can stagger each letter in.
    Triggered by .tl-ready which initLoader adds after
    the loader exits (~6.6s), so users see the reveal.
@@ -46,7 +46,7 @@
 (function initTaglineAnim() {
   const el = document.querySelector(".tagline");
   if (!el) return;
-  const text = "Flavor · with · Friction";
+  const text = "World's by BAMBI";
   el.setAttribute("aria-label", text);
   el.innerHTML = "";
   let idx = 0;
