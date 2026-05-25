@@ -6,6 +6,14 @@
     <title>BAMBI | Portfolio</title>
 
     <link rel="stylesheet" href="finalproject.css" />
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+    ></script>
     <script defer src="finalproject.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -17,7 +25,10 @@
   </head>
 
   <body>
-    <!-- ── LOADER ──────────────────────────────────── -->
+    
+    <div id="pt-overlay" aria-hidden="true"></div>
+
+    
     <div id="loader" class="loader" aria-hidden="true">
       <div class="loader-line loader-line--top"></div>
       <div class="loader-content">
@@ -30,22 +41,17 @@
       <div class="loader-line loader-line--bottom"></div>
     </div>
 
-    <!-- ── 3D CANVAS BACKGROUND ───────────────────── -->
-    <!-- JS draws the liquid metal surface here        -->
+    
+    
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
 
-    <!-- ── GRAIN TEXTURE ──────────────────────────── -->
+    
     <div class="noise" aria-hidden="true"></div>
 
-    <!-- ── CUSTOM CURSOR ──────────────────────────── -->
-    <div class="cursor" id="cursor" aria-hidden="true">
-      <div class="cursor-inner"></div>
-    </div>
-
-    <!-- ── MOUSE HALO ─────────────────────────────── -->
+    
     <div class="mouse-glow" id="mouseGlow" aria-hidden="true"></div>
 
-    <!-- ── AUDIO PLAYER ───────────────────────────── -->
+    
     <div class="audio-player" id="audioPlayer">
       <button class="audio-btn" id="audioBtn" aria-label="Play ambient track">
         <svg
@@ -76,10 +82,29 @@
       </audio>
     </div>
 
-    <!-- ── NAV ────────────────────────────────────── -->
+    
     <nav class="site-nav" aria-label="Main navigation">
-      <div class="nav-inner">
+      <div class="nav-inner nav-inner--three">
         <a href="index.html" class="nav-brand">BAMBI</a>
+
+        <div class="nav-sections" aria-label="Page sections">
+          <a href="music.html" class="nav-sec-link">Music</a>
+          <span class="nav-sec-dot" aria-hidden="true">·</span>
+          <a href="design.html" class="nav-sec-link">Design</a>
+          <span class="nav-sec-dot" aria-hidden="true">·</span>
+          <a href="world.html" class="nav-sec-link">World</a>
+          <span class="nav-sec-dot" aria-hidden="true">·</span>
+          <a href="mailto:" class="nav-sec-link">Contact</a>
+        </div>
+
+        <button
+          class="ham-btn"
+          id="hamBtn"
+          aria-label="Menu"
+          aria-expanded="false"
+        >
+          <span></span><span></span><span></span>
+        </button>
         <div class="neural-nav" aria-label="Site sections">
           <a href="music.html" class="nn-node nn-music" aria-label="Music">
             <span class="nn-dot"></span><span class="nn-label">Music</span>
@@ -99,14 +124,20 @@
         </div>
       </div>
     </nav>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <a href="music.html" class="mob-link">Music</a>
+      <a href="design.html" class="mob-link">Design</a>
+      <a href="world.html" class="mob-link">World</a>
+      <a href="mailto:" class="mob-link">Contact</a>
+    </div>
 
-    <!-- ── MAIN CONTENT ───────────────────────────── -->
+    
     <main class="container" id="main">
-      <!-- ── HERO / HEADER ────────────────────────── -->
+      
       <header class="hero reveal-up">
         <div class="brush-line" aria-hidden="true"></div>
 
-        <!-- 3D Animated Eye Emblem — pupil tracks cursor, 3D tilt on mouse -->
+        
         <div class="eye-wrap" id="eyeWrap" aria-label="BAMBI emblem">
           <svg
             class="eye-svg"
@@ -159,7 +190,7 @@
               </radialGradient>
             </defs>
 
-            <!-- Outer ambient glow ring -->
+            
             <ellipse
               cx="110"
               cy="55"
@@ -171,7 +202,7 @@
               class="eye-outer-ring"
             />
 
-            <!-- Eye lid shape — almond -->
+            
             <path
               id="eye-lid"
               d="M 6,55 C 50,4 170,4 214,55 C 170,106 50,106 6,55 Z"
@@ -181,7 +212,7 @@
               filter="url(#eye-glow)"
             />
 
-            <!-- Iris base fill -->
+            
             <circle
               cx="110"
               cy="55"
@@ -190,7 +221,7 @@
               opacity="0.85"
             />
 
-            <!-- Iris rings (3 concentric) -->
+            
             <circle
               cx="110"
               cy="55"
@@ -217,7 +248,7 @@
               stroke-width="0.5"
             />
 
-            <!-- Iris radial lines (12 spokes) -->
+            
             <g
               class="iris-spokes"
               stroke="rgba(201,169,110,0.18)"
@@ -303,7 +334,7 @@
               />
             </g>
 
-            <!-- Pupil — moves to follow cursor -->
+            
             <circle
               id="eye-pupil"
               cx="110"
@@ -320,7 +351,7 @@
               fill="#040102"
             />
 
-            <!-- Catchlight highlight -->
+            
             <ellipse
               id="eye-highlight"
               cx="118"
@@ -339,7 +370,7 @@
               transform="rotate(-18 104 62)"
             />
 
-            <!-- Upper eyelid edge — stronger line for definition -->
+            
             <path
               d="M 6,55 C 50,4 170,4 214,55"
               fill="none"
@@ -347,7 +378,7 @@
               stroke-width="1.4"
             />
 
-            <!-- Eyebrow arc above the eye -->
+            
             <path
               class="eye-brow"
               d="M 30,22 C 70,-2 150,-2 190,22"
@@ -365,7 +396,7 @@
             />
           </svg>
 
-          <!-- Ripple rings pulse outward on hover -->
+          
           <span class="kamon-ripple" aria-hidden="true"></span>
           <span class="kamon-ripple" aria-hidden="true"></span>
           <span class="kamon-ripple" aria-hidden="true"></span>
@@ -384,13 +415,13 @@
 
         <div class="brush-line brush-line--bottom" aria-hidden="true"></div>
 
-        <!-- Animated scroll indicator -->
+        
         <div class="hero-scroll" aria-hidden="true">
           <div class="hero-scroll-line"></div>
         </div>
       </header>
 
-      <!-- ── MARQUEE — brand values ticker ──────── -->
+      
       <div class="marquee-bar" aria-hidden="true">
         <div class="marquee-track">
           <span>IM</span><span class="mdot">·</span> <span>NOT</span
@@ -401,7 +432,7 @@
           <span>LEGEND.</span><span class="mdot">·</span> <span>IM</span
           ><span class="mdot">·</span> <span>NOT</span
           ><span class="mdot">·</span>
-          <!-- duplicate for seamless loop -->
+          
           <span>A</span><span class="mdot">·</span> <span>REAL</span
           ><span class="mdot">·</span> <span>PERSON.</span
           ><span class="mdot">·</span> <span>IM</span
@@ -411,7 +442,7 @@
         </div>
       </div>
 
-      <!-- ── 3 NAVIGATION CARDS ───────────────────── -->
+      
       <section
         class="cards-section reveal-up"
         aria-label="Portfolio navigation"
@@ -449,7 +480,7 @@
         </div>
       </section>
 
-      <!-- ── CTA ───────────────────────────────────── -->
+      
       <section class="cta-section reveal-up">
         <div class="cta-inner">
           <p class="cta-eyebrow">— Available for collaborations</p>
@@ -463,13 +494,13 @@
               rel="noopener"
               >Spotify ↗</a
             >
-            <!-- ↓ REPLACE mailto: with your booking / contact email -->
+            
             <a href="mailto:" class="cta-btn cta-btn--ghost">Get In Touch</a>
           </div>
         </div>
       </section>
 
-      <!-- ── FOOTER ──────────────────────────────── -->
+      
       <footer class="site-footer reveal-up">
         <div class="footer-top">
           <div class="footer-brand-col">
@@ -481,7 +512,7 @@
           </div>
           <div class="footer-col">
             <h4 class="footer-col-title">Music</h4>
-            <!-- ↓ REPLACE each href="#" with your actual platform URLs -->
+            
             <a href="#" class="footer-link" target="_blank" rel="noopener"
               >Spotify</a
             >
@@ -497,7 +528,7 @@
           </div>
           <div class="footer-col">
             <h4 class="footer-col-title">Social</h4>
-            <!-- ↓ REPLACE each href="#" with your actual social URLs -->
+            
             <a href="#" class="footer-link" target="_blank" rel="noopener"
               >Instagram</a
             >
@@ -520,7 +551,7 @@
               rel="noopener"
               >solo.to/bambi.us ↗</a
             >
-            <!-- ↓ REPLACE mailto: with your booking email -->
+            
             <a href="mailto:" class="footer-link">Booking</a>
             <a href="#" class="footer-link">Press Kit</a>
           </div>
@@ -537,5 +568,6 @@
         </div>
       </footer>
     </main>
+    <script src="transitions.js"></script>
   </body>
 </html>

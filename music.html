@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BAMBI | Music</title>
     <link rel="stylesheet" href="redesign.css" />
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script defer src="music.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,11 +16,14 @@
     />
   </head>
   <body>
-    <!-- ── LOADER ──────────────────────────────────── -->
+    
+    <div id="pt-overlay" aria-hidden="true"></div>
+
+    
     <div id="loader" class="loader" aria-hidden="true">
       <div class="loader-line loader-line--top"></div>
       <div class="loader-content">
-        <!-- EQ visualizer bars — music page loader -->
+        
         <div class="loader-eq" aria-hidden="true">
           <span class="eq-bar" style="--i:0"></span>
           <span class="eq-bar" style="--i:1"></span>
@@ -29,7 +34,7 @@
           <span class="eq-bar" style="--i:6"></span>
           <span class="eq-bar" style="--i:7"></span>
         </div>
-        <!-- Hidden kamon svg (keep for JS reference elsewhere) -->
+        
         <div style="display:none" aria-hidden="true"><svg viewBox="0 0 80 80" width="56" height="56">
             <g class="lk-ring-a">
               <ellipse cx="40" cy="11" rx="2.5" ry="8" fill="currentColor" />
@@ -146,28 +151,23 @@
       <div class="loader-line loader-line--bottom"></div>
     </div>
 
-    <!-- ── CANVAS BACKGROUND ─────────────────────── -->
+    
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
-    <!-- CRT scanline overlay — y2k/industrial texture -->
+    
     <div class="scanlines" aria-hidden="true"></div>
 
-    <!-- ── GRAIN ─────────────────────────────────── -->
+    
     <div class="grain" aria-hidden="true"></div>
 
-    <!-- ── CUSTOM CURSOR ──────────────────────────── -->
-    <div class="cursor" id="cursor" aria-hidden="true">
-      <div class="cursor-inner"></div>
-    </div>
-
-    <!-- ── MOUSE GLOW ──────────────────────────────── -->
+    
     <div class="mouse-glow" id="mouseGlow" aria-hidden="true"></div>
 
-    <!-- ── NAV ─────────────────────────────────────── -->
+    
     <nav class="site-nav" aria-label="Main navigation">
       <div class="nav-inner nav-inner--three">
         <a href="index.html" class="nav-brand">BAMBI</a>
 
-        <!-- Centre section links -->
+        
         <div class="nav-sections" aria-label="Page sections">
           <a href="#about" class="nav-sec-link">About</a>
           <span class="nav-sec-dot" aria-hidden="true">·</span>
@@ -176,7 +176,7 @@
           <a href="#tour" class="nav-sec-link">Live</a>
           <span class="nav-sec-dot" aria-hidden="true">·</span>
           <a href="mailto:" class="nav-sec-link">
-            <!-- ↓ REPLACE mailto: with your booking/contact email -->
+            
             Contact
           </a>
         </div>
@@ -216,12 +216,9 @@
       <a href="https://solo.to/bambi.us" class="mob-link" target="_blank">All Links ↗</a>
     </div>
 
-    <!-- ── HERO ─────────────────────────────────────── -->
+    
     <section class="hero" id="hero">
       <div class="hero-vignette" aria-hidden="true"></div>
-      <div class="hero-ring hero-ring--1" aria-hidden="true"></div>
-      <div class="hero-ring hero-ring--2" aria-hidden="true"></div>
-      <div class="hero-ring hero-ring--3" aria-hidden="true"></div>
       <span class="hero-bg-num" aria-hidden="true">B.</span>
       <div class="hero-content">
         <p class="hero-eyebrow">BAMBI &nbsp;·&nbsp; DJ &amp; PRODUCER</p>
@@ -245,7 +242,7 @@
       </div>
     </section>
 
-    <!-- ── MARQUEE ───────────────────────────────────── -->
+    
     <div class="marquee-bar" aria-hidden="true">
       <div class="marquee-track">
         <span>Tension</span><span class="dot">·</span> <span>Repetition</span
@@ -256,7 +253,7 @@
         ><span class="dot">·</span> <span>Depth</span><span class="dot">·</span>
         <span>Speed</span><span class="dot">·</span> <span>Precision</span
         ><span class="dot">·</span>
-        <!-- duplicate for seamless loop -->
+        
         <span>Tension</span><span class="dot">·</span> <span>Repetition</span
         ><span class="dot">·</span> <span>Controlled Chaos</span
         ><span class="dot">·</span> <span>Sound</span><span class="dot">·</span>
@@ -268,9 +265,9 @@
       </div>
     </div>
 
-    <!-- ── MAIN ─────────────────────────────────────── -->
+    
     <main class="container" id="main">
-      <!-- ── 00 · STREAM ───────────────────────────── -->
+      
       <section class="work-section reveal" id="music">
         <div class="section-header">
           <span class="section-num">00</span>
@@ -281,7 +278,7 @@
 
         <div class="platform-grid">
           <div class="platform-embed reveal reveal-d1">
-            <!-- Spotify artist profile — shows top tracks + follow -->
+            
             <iframe
               data-testid="embed-iframe"
               style="border-radius:12px; display:block"
@@ -295,20 +292,20 @@
             ></iframe>
           </div>
           <div class="platform-links reveal reveal-d2">
-            <!-- ↓ REPLACE each href="#" with your actual streaming platform URLs -->
+            
             <a href="#" class="platform-btn" target="_blank" rel="noopener">
-              <!-- ↓ REPLACE with your Spotify artist URL -->
+              
               ♫ Spotify ↗
             </a>
             <a href="https://on.soundcloud.com/dyiOszXDgXcOh7BJP9" class="platform-btn" target="_blank" rel="noopener">
               ☁ SoundCloud ↗
             </a>
             <a href="#" class="platform-btn" target="_blank" rel="noopener">
-              <!-- ↓ REPLACE with your Apple Music URL -->
+              
               ♪ Apple Music ↗
             </a>
             <a href="#" class="platform-btn" target="_blank" rel="noopener">
-              <!-- ↓ REPLACE with your Beatport URL -->
+              
               ◈ Beatport ↗
             </a>
             <a
@@ -323,7 +320,7 @@
         </div>
       </section>
 
-      <!-- ── 01 · NEW RELEASE ──────────────────────── -->
+      
       <section class="work-section reveal">
         <div class="section-header">
           <span class="section-num">01</span>
@@ -333,7 +330,7 @@
 
         <div class="featured-grid">
           <div class="featured-player reveal reveal-d1">
-            <!-- Track: We Are Free -->
+            
             <iframe
               data-testid="embed-iframe"
               style="border-radius:12px; display:block"
@@ -364,7 +361,7 @@
         </div>
       </section>
 
-      <!-- ── 02 · CATALOGUE ────────────────────────── -->
+      
       <section class="work-section reveal">
         <div class="section-header">
           <span class="section-num">02</span>
@@ -378,7 +375,7 @@
             <span class="rr-title">EP 01 — We Are Free</span>
             <span class="rr-year">2026</span>
             <span class="rr-type">EP</span>
-            <!-- ↓ REPLACE href="#" with Spotify or SoundCloud URL for this release -->
+            
             <a
               href="#"
               class="rr-link"
@@ -390,11 +387,11 @@
           </div>
           <div class="release-row reveal reveal-d2">
             <span class="rr-num">002</span>
-            <!-- ↓ REPLACE with your actual album/EP title -->
+            
             <span class="rr-title">— Release title</span>
             <span class="rr-year">2025</span>
             <span class="rr-type">Album</span>
-            <!-- ↓ REPLACE href="#" with Spotify or SoundCloud URL -->
+            
             <a
               href="#"
               class="rr-link"
@@ -406,11 +403,11 @@
           </div>
           <div class="release-row reveal reveal-d3">
             <span class="rr-num">003</span>
-            <!-- ↓ REPLACE with your actual single title -->
+            
             <span class="rr-title">— Release title</span>
             <span class="rr-year">2024</span>
             <span class="rr-type">Single</span>
-            <!-- ↓ REPLACE href="#" with Spotify or SoundCloud URL -->
+            
             <a
               href="#"
               class="rr-link"
@@ -423,7 +420,7 @@
         </div>
       </section>
 
-      <!-- ── 03 · MIX SETS ─────────────────────────── -->
+      
       <section class="work-section reveal">
         <div class="section-header">
           <span class="section-num">03</span>
@@ -465,7 +462,7 @@
           <div class="mix-card reveal reveal-d3">
             <div class="mix-platform">Spotify</div>
             <h3 class="mix-title">BAMBI — Tracks</h3>
-            <!-- Second Spotify track -->
+            
             <iframe
               data-testid="embed-iframe"
               style="border-radius:6px; display:block"
@@ -480,7 +477,7 @@
         </div>
       </section>
 
-      <!-- ── 04 · LIVE ──────────────────────────────── -->
+      
       <section class="work-section reveal" id="tour">
         <div class="section-header">
           <span class="section-num">04</span>
@@ -495,7 +492,7 @@
               <span class="show-city">Berlin</span>
               <span class="show-venue">Venue TBA</span>
             </div>
-            <!-- ↓ REPLACE href="#" with ticket / RSVP link -->
+            
             <a href="#" class="show-cta">Notify Me</a>
           </div>
           <div class="show-row reveal reveal-d2">
@@ -504,7 +501,7 @@
               <span class="show-city">New York</span>
               <span class="show-venue">Venue TBA</span>
             </div>
-            <!-- ↓ REPLACE href="#" with ticket / RSVP link -->
+            
             <a href="#" class="show-cta">Notify Me</a>
           </div>
           <div class="show-row reveal reveal-d3">
@@ -513,13 +510,13 @@
               <span class="show-city">Tokyo</span>
               <span class="show-venue">Venue TBA</span>
             </div>
-            <!-- ↓ REPLACE href="#" with ticket / RSVP link -->
+            
             <a href="#" class="show-cta">Notify Me</a>
           </div>
         </div>
       </section>
 
-      <!-- ── 05 · ABOUT ─────────────────────────────── -->
+      
       <section class="work-section about-section reveal" id="about">
         <div class="section-header">
           <span class="section-num">05</span>
@@ -554,14 +551,14 @@
         </div>
       </section>
 
-      <!-- ── 06 · CONNECT (CTA) ────────────────────── -->
+      
       <section class="cta-band reveal">
         <div class="cta-inner">
           <p class="cta-eyebrow">— Available for bookings &amp; collabs</p>
           <h2 class="cta-headline">BOOK. COLLABORATE.<br />CREATE.</h2>
           <p class="cta-sub">Dark energy. Precision grooves. No compromises.</p>
           <div class="cta-actions">
-            <!-- ↓ REPLACE href="mailto:" with your booking email -->
+            
             <a href="mailto:" class="btn-primary">Booking Inquiry</a>
             <a href="https://solo.to/bambi.us" class="btn-ghost" target="_blank" rel="noopener"
               >View All Links ↗</
@@ -570,7 +567,7 @@
         </div>
       </section>
 
-      <!-- ── FOOTER ─────────────────────────────────── -->
+      
       <footer class="site-footer">
         <div class="footer-top">
           <div class="footer-brand-col">
@@ -582,7 +579,7 @@
           </div>
           <div class="footer-col">
             <h4 class="footer-col-title">Music</h4>
-            <!-- ↓ REPLACE each href="#" with your actual platform URLs -->
+            
             <a href="#" class="footer-link" target="_blank" rel="noopener"
               >Spotify</a
             >
@@ -596,7 +593,7 @@
           </div>
           <div class="footer-col">
             <h4 class="footer-col-title">Social</h4>
-            <!-- ↓ REPLACE each href="#" with your actual social URLs -->
+            
             <a href="#" class="footer-link" target="_blank" rel="noopener"
               >Instagram</a
             >
@@ -615,7 +612,7 @@
             <a href="https://open.spotify.com/artist/1I42x8SJ0E1udvNZ0Qu3cd" class="footer-link" target="_blank" rel="noopener"
               >Spotify Artist</a
             >
-            <!-- ↓ REPLACE mailto: with your booking email -->
+            
             <a href="mailto:" class="footer-link">Booking</a>
             <a href="#" class="footer-link">Press Kit</a>
           </div>
@@ -633,8 +630,8 @@
       </footer>
     </main>
 
-    <!-- ── AMBIENT AUDIO REACTOR ─────────────────── -->
-    <!-- Drop your ambient track at assets/audio/ambient.mp3 -->
+    
+    
     <div class="ambient-player" id="ambientPlayer" title="Toggle ambient audio">
       <button class="ambient-btn" id="ambientBtn" aria-label="Play ambient track">
         <span class="amb-icon">♪</span>
@@ -644,5 +641,6 @@
       </audio>
     </div>
 
+    <script src="transitions.js"></script>
   </body>
 </html>

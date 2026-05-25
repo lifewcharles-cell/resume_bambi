@@ -1,28 +1,15 @@
-/* ================================================
-   BAMBI PORTFOLIO — finalproject.js
-
-   SECTIONS
-   §1  initLoader       — progress bar + timing
-   §2  initCanvas       — 3D wave-grid background
-   §3  initCursor       — lagging outer ring + inner dot
-   §4  initMouseGlow    — slow ambient halo
-   §5  initCards        — 3D tilt + spotlight per card
-   §6  initKamon        — compass needle toward cursor
-   §7  initReveal       — IntersectionObserver fade-up
-   §8  initAudio        — play/pause + bar animation
-================================================ */
-
-/* ────────────────────────────────────────────────
-   §1 · LOADER
-   Timing:
-     150ms  — .loader-active  → entry animations
-     5000ms — .loader-hidden  → exit (1.5s)
-     6600ms — DOM remove + scroll unlock
-──────────────────────────────────────────────── */
 (function initLoader() {
   const loader = document.getElementById("loader");
   const body = document.body;
   if (!loader) return;
+
+  if (sessionStorage.getItem("bambi-pt")) {
+    sessionStorage.removeItem("bambi-pt");
+    loader.remove();
+    const tl = document.querySelector(".tagline");
+    if (tl) tl.classList.add("tl-ready");
+    return;
+  }
 
   body.classList.add("loading");
   setTimeout(() => loader.classList.add("loader-active"), 150);
@@ -35,13 +22,6 @@
   }, 6600);
 })();
 
-/* ────────────────────────────────────────────────
-   §1b · TAGLINE LETTER SPLIT
-   Splits "World's by BAMBI" into individual
-   <span> elements so CSS can stagger each letter in.
-   Triggered by .tl-ready which initLoader adds after
-   the loader exits (~6.6s), so users see the reveal.
-──────────────────────────────────────────────── */
 (function initTaglineAnim() {
   const el = document.querySelector(".tagline");
   if (!el) return;
@@ -62,170 +42,85 @@
   });
 })();
 
-/* ────────────────────────────────────────────────
-   §2 · LIQUID METAL CANVAS  (Ex Machina theme)
-
-   TECHNIQUE: per-pixel Phong shading on a
-   procedural height field rendered at 1/4 viewport
-   resolution. The browser bilinearly upscales it —
-   that natural blur IS the liquid appearance.
-
-   HEIGHT FIELD: 4 overlapping sine waves at coprime
-   frequencies create complex, non-repeating motion
-   that reads as organic liquid metal.
-
-   LIGHTING:
-   - Surface normal: finite differences of height
-   - Diffuse: Lambertian (form shading)
-   - Specular: Phong power=34 (tight metallic peak)
-   - Light source: follows mouse with 6% lag per frame
-     → specular highlights slide across the surface
-       as you move the cursor
-
-   COLOR:
-   - Shadow areas:  near-transparent (bg shows through)
-   - Lit surface:   faint warm rose lift
-   - Specular peak: gold (hC high) ↔ crimson (hC low)
-     based on surface height at the sample point
-
-   PERFORMANCE:
-   DS=4 → renders at ~480×270 for a 1920×1080 screen
-   = 82,944 pixels × 3 height samples = ~750K math ops
-   per frame. Fast on any modern device at 60fps.
-──────────────────────────────────────────────── */
 (function initCanvas() {
   const canvas = document.getElementById("bg-canvas");
   if (!canvas) return;
   const ctx = canvas.getContext("2d");
-
-  const DS = 4; // downscale: render at 1/DS of viewport
+  const DS = 3;
   let W, H, img, px;
-
   function resize() {
     W = Math.ceil(window.innerWidth / DS);
     H = Math.ceil(window.innerHeight / DS);
-    canvas.width = W; // low-res render buffer
+    canvas.width = W;
     canvas.height = H;
-    // CSS display size = full viewport so browser upscales the render
     canvas.style.width = window.innerWidth + "px";
     canvas.style.height = window.innerHeight + "px";
     img = ctx.createImageData(W, H);
-    px = img.data; // Uint8ClampedArray — 4 bytes (RGBA) per pixel
+    px = img.data;
   }
-
-  let t = 0;
-  // Light source normalized position 0..1 per axis
-  // Target set by mouse, actual eases toward target
-  let lx = 0.35,
+  let t = 0,
+    lx = 0.35,
     ly = 0.28,
     tlx = 0.35,
     tly = 0.28;
-
-  // Height field — 4 sine waves at coprime frequencies.
-  // Returns a value in approximately −1 … +1.
   function hf(wx, wy, ti) {
     return (
-      Math.sin(wx * 0.9 + ti * 0.94) * Math.cos(wy * 0.74 - ti * 0.67) * 0.32 +
-      Math.sin(wx * 0.45 - ti * 0.55) * Math.cos(wy * 1.15 + ti * 0.41) * 0.27 +
-      Math.cos(wx * 1.21 + wy * 0.89 + ti * 1.07) * 0.22 +
-      Math.sin(wx * 0.29 + wy * 0.54 - ti * 0.69) * 0.19
+      Math.sin(wx * 0.88 + ti * 0.91) * Math.cos(wy * 0.72 - ti * 0.63) * 0.24 +
+      Math.sin(wx * 0.43 - ti * 0.54) * Math.cos(wy * 1.19 + ti * 0.38) * 0.21 +
+      Math.cos(wx * 1.34 + wy * 0.87 + ti * 1.03) * 0.18 +
+      Math.sin(wx * 0.27 + wy * 0.53 - ti * 0.72) * 0.16 +
+      Math.sin(wx * 2.18 + wy * 1.84 + ti * 1.41) * 0.08 +
+      Math.cos(wx * 0.14 - wy * 0.2 + ti * 0.27) * 0.13
     );
   }
-
   function frame() {
-    t += 0.0085; // time step — controls flow speed
-
-    // Ease light toward mouse target (~6% per frame)
+    t += 0.003;
     lx += (tlx - lx) * 0.06;
     ly += (tly - ly) * 0.06;
-
-    // Light direction vector (surface z-up world space)
-    const rlx = lx * 2 - 1; // remap 0..1 → -1..+1
-    const rly = ly * 2 - 1;
-    const rlz = 1.5; // light is elevated above surface
+    const rlx = lx * 2 - 1,
+      rly = ly * 2 - 1,
+      rlz = 1.4;
     const ll = Math.sqrt(rlx * rlx + rly * rly + rlz * rlz);
-    const Lx = rlx / ll;
-    const Ly = rly / ll;
-    const Lz = rlz / ll;
-
-    const WS = 0.092; // spatial scale — controls wave size on screen
-    const NAMP = 5.8; // normal amplification — higher = sharper reflections
-    const EPS = 0.65; // finite-difference step in world units
-
+    const Lx = rlx / ll,
+      Ly = rly / ll,
+      Lz = rlz / ll;
+    const WS = 0.085,
+      NAMP = 3.8,
+      EPS = 0.6;
     for (let y = 0; y < H; y++) {
       for (let x = 0; x < W; x++) {
-        const wx = x * WS;
-        const wy = y * WS;
-
-        // ── HEIGHT SAMPLES ──────────────────────
-        const hC = hf(wx, wy, t);
-        const hR = hf(wx + EPS, wy, t); // one step right
-        const hD = hf(wx, wy + EPS, t); // one step down
-
-        // ── SURFACE NORMAL (finite differences) ─
-        // Tangents: T_x = (EPS, 0, hR-hC), T_y = (0, EPS, hD-hC)
-        // Normal = cross(T_x, T_y), amplified for stronger sheen
-        let nx = -(hR - hC) * NAMP;
-        let ny = -(hD - hC) * NAMP;
-        let nz = 1.0;
+        const wx = x * WS,
+          wy = y * WS;
+        const hC = hf(wx, wy, t),
+          hR = hf(wx + EPS, wy, t),
+          hD = hf(wx, wy + EPS, t);
+        let nx = -(hR - hC) * NAMP,
+          ny = -(hD - hC) * NAMP,
+          nz = 1.0;
         const nl = Math.sqrt(nx * nx + ny * ny + nz * nz);
         nx /= nl;
         ny /= nl;
         nz /= nl;
-
-        // ── LIGHTING ────────────────────────────
         const NdL = nx * Lx + ny * Ly + nz * Lz;
         const diff = Math.max(0, NdL);
-
-        // Specular: R = 2(N·L)N − L, view = (0,0,1) → dot = Rz
         const Rz = Math.max(0, 2 * NdL * nz - Lz);
-        const spec =
-          Rz *
-          Rz *
-          Rz *
-          Rz * // pow(Rz, 34) unrolled
-          Rz *
-          Rz *
-          Rz *
-          Rz *
-          Rz *
-          Rz *
-          Rz *
-          Rz *
-          Rz *
-          Rz *
-          Rz *
-          Rz *
-          Rz *
-          Rz;
-
-        // ── COLOR ───────────────────────────────
-        // Height 0..1 drives the base hue mix
+        
+        let sT = Rz * Rz;
+        sT *= sT;
+        sT *= sT;
+        sT *= sT;
+        sT *= Rz * Rz * Rz * Rz * Rz * Rz;
+        const sS = Rz * Rz * Rz * Rz * Rz; 
         const hn = (hC + 1.0) * 0.5;
-
-        // Hue slowly cycles between two palettes over ~5 min at 60fps.
-        // Palette A (hueT=0): gold(201,169,110) ↔ crimson(196,53,86)
-        // Palette B (hueT=1): bright-peach(230,185,120) ↔ rose-violet(175,45,130)
-        const hueT = (Math.sin(t * 0.038) + 1) * 0.5;
-        const pAR = 201 * hn + 196 * (1 - hn);
-        const pAG = 169 * hn + 53 * (1 - hn);
-        const pAB = 110 * hn + 86 * (1 - hn);
-        const pBR = 230 * hn + 175 * (1 - hn);
-        const pBG = 185 * hn + 45 * (1 - hn);
-        const pBB = 120 * hn + 130 * (1 - hn);
-        const sR = (pAR * (1 - hueT) + pBR * hueT) | 0;
-        const sG = (pAG * (1 - hueT) + pBG * hueT) | 0;
-        const sB = (pAB * (1 - hueT) + pBB * hueT) | 0;
-
-        // Compose: base #060408 + diffuse warm lift + specular peak
-        const r = Math.min(255, 6 + diff * 46 + spec * sR) | 0;
-        const g = Math.min(255, 4 + diff * 12 + spec * sG) | 0;
-        const b = Math.min(255, 8 + diff * 20 + spec * sB) | 0;
-
-        // Alpha: near-invisible in shadow → bright at specular peak
-        // (CSS opacity: 0.6 multiplies this further)
-        const a = Math.min(255, (0.11 + diff * 0.14 + spec * 0.75) * 255) | 0;
-
+        
+        const spR = 255 * hn + 215 * (1 - hn);
+        const spG = 255 * hn + 218 * (1 - hn);
+        const spB = 255 * hn + 226 * (1 - hn); 
+        const r = Math.min(255, 12 + diff * 16 + sT * (spR | 0) + sS * 45) | 0;
+        const g = Math.min(255, 12 + diff * 16 + sT * (spG | 0) + sS * 45) | 0;
+        const b = Math.min(255, 14 + diff * 18 + sT * (spB | 0) + sS * 50) | 0;
+        const a =
+          Math.min(255, (sT * 0.72 + sS * 0.09 + diff * 0.025) * 255) | 0;
         const i = (y * W + x) * 4;
         px[i] = r;
         px[i + 1] = g;
@@ -233,23 +128,18 @@
         px[i + 3] = a;
       }
     }
-
     ctx.putImageData(img, 0, 0);
     requestAnimationFrame(frame);
   }
-
-  // Mouse: moves the light source — reflections follow the cursor
   window.addEventListener("mousemove", (e) => {
     tlx = e.clientX / window.innerWidth;
     tly = e.clientY / window.innerHeight;
   });
-
   window.addEventListener("resize", resize);
   resize();
   frame();
 })();
 
-/* §2.5 removed — Japanese pattern overlay stripped from index page */
 (function initPatterns() {
   const canvas = document.getElementById("pattern-canvas");
   if (!canvas) return;
@@ -294,7 +184,7 @@
     return gr;
   }
 
-  // Elements float around base positions via slow sinusoidal drift
+  
   function wander(phase, amp) {
     return {
       x: Math.sin(t * 0.11 + phase * 1.31) * amp,
@@ -302,7 +192,7 @@
     };
   }
 
-  // Shift canvas origin for one depth layer, then restore
+  
   function withOffset(dx, dy, fn) {
     ctx.save();
     ctx.translate(dx, dy);
@@ -310,7 +200,7 @@
     ctx.restore();
   }
 
-  // ── SHIPPO (七宝) — pulsing dashed interlocking circles ──────────
+  
   function shippo() {
     const pulse = 1 + Math.sin(t * 0.38) * 0.13;
     const R = Math.min(W, H) * 0.062 * pulse;
@@ -326,7 +216,7 @@
     const cols = Math.ceil((W * 2) / dx) + PAD * 2;
     const rows = Math.ceil((H * 2) / dy) + PAD * 2;
 
-    // Glow pass
+    
     ctx.strokeStyle = rgbA(0, 0.65);
     ctx.lineWidth = 2.4;
     ctx.shadowColor = rgbA(0, 0.9);
@@ -343,7 +233,7 @@
       }
     }
 
-    // Color pass
+    
     ctx.shadowBlur = 0;
     ctx.lineWidth = 1.3;
     ctx.globalAlpha = 0.14;
@@ -363,7 +253,7 @@
     ctx.restore();
   }
 
-  // ── ASAGAO (朝顔) — drifting, breathing morning glory ────────────
+  
   function asagao(bx, by, R, petals, alpha, phase) {
     const breathe = 1 + Math.sin(t * 1.2 + phase) * 0.1;
     const dr = wander(phase, R * 0.22);
@@ -377,7 +267,7 @@
     ctx.shadowBlur = 20;
     ctx.lineWidth = 2.0;
 
-    // Two outer glow rings at different radii
+    
     ctx.strokeStyle = rgb(phase + 0.6);
     ctx.globalAlpha = alpha * 0.55;
     ctx.beginPath();
@@ -389,7 +279,7 @@
     ctx.arc(0, 0, sR * 1.42, 0, Math.PI * 2);
     ctx.stroke();
 
-    // Petals — each a gradient-stroked circle orbiting center
+    
     ctx.globalAlpha = alpha;
     for (let p = 0; p < petals; p++) {
       const a = (p / petals) * Math.PI * 2;
@@ -402,7 +292,7 @@
       ctx.stroke();
     }
 
-    // Inner ring + glowing centre dot
+    
     ctx.strokeStyle = rgb(phase);
     ctx.fillStyle = rgb(phase + 1.3);
     ctx.lineWidth = 1.5;
@@ -419,7 +309,7 @@
     ctx.restore();
   }
 
-  // ── KARAKUSA (唐草) — morphing arabesque vine ─────────────────────
+  
   function karakusa(bx, by, size, alpha, phase, dir) {
     const dr = wander(phase * 0.6, size * 0.18);
     const extend = 1 + Math.sin(t * 0.55 + phase) * 0.22;
@@ -442,7 +332,7 @@
     }
     ctx.stroke();
 
-    // 4 branches — each breathes independently in length
+    
     for (let b = 0; b < 4; b++) {
       const ba = (b / 4) * Math.PI * 2;
       const len =
@@ -466,7 +356,7 @@
     ctx.restore();
   }
 
-  // ── KANOKO (鹿の子) — outward ripple-wave dot field ──────────────
+  
   function kanoko(bx, by, fieldR, spacing, dotR, alpha, phase) {
     const dr = wander(phase * 0.4, fieldR * 0.14);
     ctx.save();
@@ -498,20 +388,20 @@
     ctx.restore();
   }
 
-  // ── RENDER LOOP ──────────────────────────────────────────────────
+  
   function frame() {
     ctx.clearRect(0, 0, W, H);
     t += 0.005;
     const M = Math.min(W, H);
 
-    // Ease parallax toward mouse target
+    
     pmx += (tpmx - pmx) * 0.055;
     pmy += (tpmy - pmy) * 0.055;
 
-    // Layer 0 — background (Shippo): barely moves
+    
     withOffset(pmx * 5, pmy * 5, () => shippo());
 
-    // Layer 1 — mid-ground (center Asagao + Karakusa vines): medium drift
+    
     withOffset(pmx * 14, pmy * 14, () => {
       asagao(W * 0.5, H * 0.5, M * 0.23, 8, 0.11, 0.8);
       karakusa(W * 0.16, H * 0.22, M * 0.15, 0.12, 0.0, 1);
@@ -522,7 +412,7 @@
       karakusa(W * 0.5, H * 0.72, M * 0.12, 0.1, 5.24, -1);
     });
 
-    // Layer 2 — foreground (corner Asagao + Kanoko dots): fastest drift
+    
     withOffset(pmx * 26, pmy * 26, () => {
       asagao(W * 0.07, H * 0.1, M * 0.15, 6, 0.15, 0.0);
       asagao(W * 0.93, H * 0.9, M * 0.16, 8, 0.14, 1.2);
@@ -553,60 +443,6 @@
   frame();
 })();
 
-/* ────────────────────────────────────────────────
-   §3 · CUSTOM CURSOR
-   Two-ring system:
-   - Outer ring: lerps toward mouse at 12% per frame
-   - Inner dot:  snaps exactly to mouse position
-──────────────────────────────────────────────── */
-(function initCursor() {
-  const cursorEl = document.getElementById("cursor");
-  if (!cursorEl) return;
-
-  let cursorX = 0,
-    cursorY = 0;
-  let mouseX = 0,
-    mouseY = 0;
-
-  document.addEventListener("mousemove", (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  });
-
-  const inner = cursorEl.querySelector(".cursor-inner");
-
-  function animateCursor() {
-    cursorX += (mouseX - cursorX) * 0.12;
-    cursorY += (mouseY - cursorY) * 0.12;
-
-    cursorEl.style.left = cursorX + "px";
-    cursorEl.style.top = cursorY + "px";
-
-    if (inner) {
-      inner.style.left = mouseX - cursorX + "px";
-      inner.style.top = mouseY - cursorY + "px";
-    }
-
-    requestAnimationFrame(animateCursor);
-  }
-  animateCursor();
-
-  // Expand cursor over interactive elements
-  document.querySelectorAll("a, button").forEach((el) => {
-    el.addEventListener("mouseenter", () =>
-      document.body.classList.add("cursor-hover"),
-    );
-    el.addEventListener("mouseleave", () =>
-      document.body.classList.remove("cursor-hover"),
-    );
-  });
-})();
-
-/* ────────────────────────────────────────────────
-   §4 · MOUSE GLOW
-   CSS transition on .mouse-glow handles the lag —
-   we just update the position here.
-──────────────────────────────────────────────── */
 (function initMouseGlow() {
   const glow = document.getElementById("mouseGlow");
   if (!glow) return;
@@ -616,16 +452,6 @@
   });
 })();
 
-/* ────────────────────────────────────────────────
-   §5 · 3D CARD TILT + SPOTLIGHT
-
-   Each .icard is independent — no shared state.
-   On mousemove:
-     1. --mx / --my drive the spotlight gradient
-     2. perspective() in the inline transform gives
-        each card its own vanishing point
-     3. Clears on mouseleave; CSS transition resets
-──────────────────────────────────────────────── */
 (function initCards() {
   const cards = document.querySelectorAll(".icard");
   if (!cards.length) return;
@@ -652,7 +478,7 @@
     });
   });
 
-  // Each card shifts the entire background to its own color world
+  
   const THEMES = {
     "music.html": "music",
     "design.html": "design",
@@ -671,12 +497,6 @@
   });
 })();
 
-/* ────────────────────────────────────────────────
-   §6 · KAMON COMPASS NEEDLE
-
-   3D eye emblem — pupil tracks cursor, CSS 3D tilt on mouse.
-   Pupil is clamped inside the iris radius so it never exits.
-──────────────────────────────────────────────── */
 (function initEye() {
   const wrap = document.getElementById("eyeWrap");
   const hero = document.querySelector(".hero");
@@ -685,14 +505,14 @@
   const hilite = document.getElementById("eye-highlight");
   if (!wrap || !pupil || !hero) return;
 
-  const MAX = 13; // max pupil drift in SVG units
+  const MAX = 13; 
 
   hero.addEventListener("mousemove", (e) => {
     const rect = wrap.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
 
-    // Normalised offset -1..+1
+    
     const nx = Math.max(
       -1,
       Math.min(1, (e.clientX - cx) / (window.innerWidth * 0.35)),
@@ -702,7 +522,7 @@
       Math.min(1, (e.clientY - cy) / (window.innerHeight * 0.35)),
     );
 
-    // Move pupil (SVG centre is 110,55)
+    
     const px = (110 + nx * MAX).toFixed(2);
     const py = (55 + ny * MAX * 0.65).toFixed(2);
     pupil.setAttribute("cx", px);
@@ -712,7 +532,7 @@
     hilite.setAttribute("cx", (+px + 7).toFixed(2));
     hilite.setAttribute("cy", (+py - 7).toFixed(2));
 
-    // CSS 3D tilt on the whole emblem
+    
     const tiltX = (-ny * 18).toFixed(1);
     const tiltY = (nx * 22).toFixed(1);
     wrap.style.transform = `perspective(280px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
@@ -729,12 +549,6 @@
   });
 })();
 
-/* ────────────────────────────────────────────────
-   §7 · SCROLL REVEAL
-   Elements with .reveal-up start invisible + low.
-   IntersectionObserver adds .visible when 15% of
-   the element enters the viewport.
-──────────────────────────────────────────────── */
 (function initReveal() {
   const els = document.querySelectorAll(".reveal-up");
   if (!els.length) return;
@@ -754,12 +568,6 @@
   els.forEach((el) => obs.observe(el));
 })();
 
-/* ────────────────────────────────────────────────
-   §8 · AUDIO PLAYER — circular ring visualizer
-   Idle:   ring breathes slowly with a sine wave
-   Playing: Web Audio AnalyserNode drives each of
-            64 ring points outward by frequency data
-──────────────────────────────────────────────── */
 (function initAudio() {
   const audioEl = document.getElementById("audio");
   const audioBtn = document.getElementById("audioBtn");
@@ -784,7 +592,7 @@
   function connectAnalyser() {
     if (audioCtx) return;
     audioCtx = new (
-      window.AudioContext || /** @type {any} */ (window).webkitAudioContext
+      window.AudioContext ||  (window).webkitAudioContext
     )();
     audioCtx.resume();
     analyser = audioCtx.createAnalyser();
@@ -861,3 +669,85 @@
     }
   });
 })();
+
+(function initHamburger() {
+  const btn = document.getElementById("hamBtn");
+  const menu = document.getElementById("mobileMenu");
+  if (!btn || !menu) return;
+  btn.addEventListener("click", () => {
+    const open = menu.classList.toggle("is-open");
+    btn.setAttribute("aria-expanded", open);
+    menu.setAttribute("aria-hidden", !open);
+  });
+  menu.querySelectorAll(".mob-link").forEach((a) => {
+    a.addEventListener("click", () => {
+      menu.classList.remove("is-open");
+      btn.setAttribute("aria-expanded", "false");
+      menu.setAttribute("aria-hidden", "true");
+    });
+  });
+})();
+
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.from(".icard", {
+  scrollTrigger: {
+    trigger: ".cards-grid",
+    start: "top 80%",
+    toggleActions: "play none none none",
+  },
+  y: 60,
+  opacity: 0,
+  duration: 1.0,
+  stagger: 0.16,
+  ease: "power3.out",
+  clearProps: "transform,opacity",
+});
+
+gsap.utils.toArray(".section-title").forEach((el) => {
+  gsap.from(el, {
+    scrollTrigger: {
+      trigger: el,
+      start: "top 88%",
+      toggleActions: "play none none none",
+    },
+    x: -36,
+    opacity: 0,
+    duration: 1.0,
+    ease: "power3.out",
+    clearProps: "transform,opacity",
+  });
+});
+
+gsap.from(".footer-col", {
+  scrollTrigger: { trigger: ".site-footer", start: "top 92%" },
+  y: 28,
+  opacity: 0,
+  duration: 0.8,
+  stagger: 0.1,
+  ease: "power2.out",
+  clearProps: "transform,opacity",
+});
+
+let tl = gsap.timeline({
+  scrollTrigger: {
+    trigger: ".cta-section",
+    pin: true,
+    start: "top top",
+    end: "+=500",
+    scrub: 1,
+    snap: {
+      snapTo: "labels",
+      duration: { min: 0.2, max: 3 },
+      delay: 0.2,
+      ease: "power1.inOut",
+    },
+  },
+});
+tl.addLabel("start")
+  .from(".cta-eyebrow", { scale: 0.3, rotation: 45, autoAlpha: 0 })
+  .addLabel("color")
+  .from(".cta-headline", { y: 30, autoAlpha: 0 })
+  .addLabel("spin")
+  .from(".cta-actions", { y: 20, autoAlpha: 0 })
+  .addLabel("end");

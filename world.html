@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BAMBI | World</title>
     <link rel="stylesheet" href="world.css" />
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+    ></script>
     <script defer src="world.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,11 +22,14 @@
     />
   </head>
   <body>
-    <!-- ── LOADER ──────────────────────────────────── -->
+    
+    <div id="pt-overlay" aria-hidden="true"></div>
+
+    
     <div id="loader" class="loader" aria-hidden="true">
       <div class="loader-line loader-line--top"></div>
       <div class="loader-content">
-        <!-- Gothic void sigil — cracks open on load -->
+        
         <div class="loader-void" aria-hidden="true">
           <div class="void-ring void-ring--outer"></div>
           <div class="void-ring void-ring--mid"></div>
@@ -37,21 +48,17 @@
       <div class="loader-line loader-line--bottom"></div>
     </div>
 
-    <!-- ── CANVAS ─────────────────────────────────── -->
+    
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
 
-    <!-- ── GRAIN ─────────────────────────────────── -->
+    
     <div class="grain" aria-hidden="true"></div>
-    <!-- CRT scanlines — punk/grunge VHS texture -->
+    
     <div class="scanlines" aria-hidden="true"></div>
 
-    <!-- ── CURSOR ────────────────────────────────── -->
-    <div class="cursor" id="cursor" aria-hidden="true">
-      <div class="cursor-inner"></div>
-    </div>
     <div class="mouse-glow" id="mouseGlow" aria-hidden="true"></div>
 
-    <!-- ── THEME TOGGLE ──────────────────────────── -->
+    
     <button
       class="theme-toggle"
       id="themeToggle"
@@ -60,10 +67,22 @@
       ◐ Theme
     </button>
 
-    <!-- ── NAV ─────────────────────────────────────── -->
+    
     <nav class="site-nav" aria-label="Main navigation">
-      <div class="nav-inner">
+      <div class="nav-inner nav-inner--three">
         <a href="index.html" class="nav-brand">BAMBI</a>
+
+        
+        <div class="nav-sections" aria-label="Page sections">
+          <a href="#sp-worlds" class="nav-sec-link">Visions</a>
+          <span class="nav-sec-dot" aria-hidden="true">·</span>
+          <a href="#sp-concepts" class="nav-sec-link">Concepts</a>
+          <span class="nav-sec-dot" aria-hidden="true">·</span>
+          <a href="#sp-motion" class="nav-sec-link">Motion</a>
+          <span class="nav-sec-dot" aria-hidden="true">·</span>
+          <a href="mailto:" class="nav-sec-link">Contact</a>
+        </div>
+
         <button
           class="ham-btn"
           id="hamBtn"
@@ -105,10 +124,10 @@
       <a href="mailto:" class="mob-link">Email</a>
     </div>
 
-    <!-- ── HERO (emredevseren atmospheric) ───────────── -->
+    
     <header class="hero">
       <div class="hero-vignette" aria-hidden="true"></div>
-      <!-- hero-canvas — JS draws rotating gem + particle sphere here -->
+      
       <canvas id="hero-canvas" aria-hidden="true"></canvas>
       <div class="hero-content">
         <p class="hero-eyebrow">WORLD OF BAMBI &nbsp;·&nbsp; 2026</p>
@@ -133,7 +152,7 @@
       </div>
     </header>
 
-    <!-- ── MARQUEE ───────────────────────────────────── -->
+    
     <div class="marquee-bar" aria-hidden="true">
       <div class="marquee-track">
         <span>Worlds</span><span class="mdot">·</span> <span>Concepts</span
@@ -157,9 +176,9 @@
       </div>
     </div>
 
-    <!-- ── STICKY SCROLL PANELS ──────────────────────── -->
+    
     <section class="sticky-wrapper" aria-label="Portfolio sections">
-      <!-- Panel 01: World Building -->
+      
       <div class="sticky-panel reveal-sp" id="sp-worlds">
         <div class="sp-content">
           <div class="sp-left">
@@ -170,11 +189,11 @@
               scratch.
             </p>
             <div class="sp-links">
-              <!-- ↓ REPLACE href="#" with project URL or link to relevant work -->
+              
               <a href="#" class="sp-link" target="_blank" rel="noopener"
                 >View Project ↗</a
               >
-              <!-- ↓ REPLACE href="#" with live website URL -->
+              
               <a href="#" class="sp-link" target="_blank" rel="noopener"
                 >Live Site ↗</a
               >
@@ -182,7 +201,7 @@
           </div>
           <div class="sp-right">
             <div class="sp-img-wrap">
-              <!-- ↓ REPLACE: add src="assets/images/worlds-01.jpg" alt="Project name" -->
+              
               <img
                 src=""
                 alt="World building project — replace with your asset"
@@ -192,7 +211,7 @@
             </div>
             <div class="sp-img-grid">
               <div class="sp-img-small">
-                <!-- ↓ REPLACE: add src="assets/images/worlds-02.jpg" -->
+                
                 <img
                   src=""
                   alt="World detail — replace"
@@ -201,7 +220,7 @@
                 <div class="sp-img-placeholder small">Drop image</div>
               </div>
               <div class="sp-img-small">
-                <!-- ↓ REPLACE: add src="assets/images/worlds-03.jpg" -->
+                
                 <img
                   src=""
                   alt="World detail — replace"
@@ -214,7 +233,7 @@
         </div>
       </div>
 
-      <!-- Panel 02: Concepts & Prototypes -->
+      
       <div class="sticky-panel reveal-sp" id="sp-concepts">
         <div class="sp-content">
           <div class="sp-left">
@@ -225,11 +244,11 @@
               things.
             </p>
             <div class="sp-links">
-              <!-- ↓ REPLACE href="#" with YouTube video URL for this concept -->
+              
               <a href="#" class="sp-link" target="_blank" rel="noopener"
                 >Watch on YouTube ↗</a
               >
-              <!-- ↓ REPLACE href="#" with prototype / live URL -->
+              
               <a href="#" class="sp-link" target="_blank" rel="noopener"
                 >View Prototype ↗</a
               >
@@ -237,7 +256,7 @@
           </div>
           <div class="sp-right">
             <div class="sp-img-wrap">
-              <!-- ↓ REPLACE: add src="assets/images/concept-01.jpg" -->
+              
               <img
                 src=""
                 alt="Concept project — replace"
@@ -246,15 +265,15 @@
               <div class="sp-img-placeholder">Drop image here</div>
             </div>
             <div class="sp-video-placeholder">
-              <!-- ↓ REPLACE: insert YouTube embed or video element here -->
-              <!-- Example: <iframe src="https://www.youtube.com/embed/YOUR_ID" width="100%" height="100%" frameborder="0" allowfullscreen></iframe> -->
+              
+              
               <span>▶ Drop video / YouTube embed here</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Panel 03: Motion Graphics -->
+      
       <div class="sticky-panel reveal-sp" id="sp-motion">
         <div class="sp-content">
           <div class="sp-left">
@@ -264,29 +283,50 @@
               Moving image, visual rhythm, and time-based world-making.
             </p>
             <div class="sp-links">
-              <!-- ↓ REPLACE href="#" with your YouTube channel URL -->
+              
               <a href="#" class="sp-link" target="_blank" rel="noopener"
                 >YouTube Channel ↗</a
               >
-              <!-- ↓ REPLACE href="#" with your showreel link -->
+              
               <a href="#" class="sp-link" target="_blank" rel="noopener"
                 >View Showreel ↗</a
               >
             </div>
           </div>
           <div class="sp-right">
-            <div class="sp-video-placeholder large">
-              <!-- ↓ REPLACE: insert your main reel / YouTube embed here -->
-              <!-- <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" width="100%" height="100%" frameborder="0" allowfullscreen></iframe> -->
-              <span>▶ Drop main reel / video here</span>
+            <div class="sp-video-wrap large">
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/Osb6BiwPZNE?si=MVGltEoflykr8n52"
+                title="BAMBI — Motion Graphics"
+                frameborder="0"
+                allow="
+                  accelerometer;
+                  autoplay;
+                  clipboard-write;
+                  encrypted-media;
+                  gyroscope;
+                  picture-in-picture;
+                  web-share;
+                "
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+                style="
+                  border-radius: 4px;
+                  display: block;
+                  width: 100%;
+                  height: 100%;
+                "
+              ></iframe>
             </div>
             <div class="sp-video-row">
               <div class="sp-video-placeholder">
-                <!-- ↓ REPLACE with YouTube embed URL -->
+                
                 <span>▶ Video 2</span>
               </div>
               <div class="sp-video-placeholder">
-                <!-- ↓ REPLACE with YouTube embed URL -->
+                
                 <span>▶ Video 3</span>
               </div>
             </div>
@@ -294,7 +334,7 @@
         </div>
       </div>
 
-      <!-- Panel 04: Fine Art -->
+      
       <div class="sticky-panel reveal-sp" id="sp-art">
         <div class="sp-content">
           <div class="sp-left">
@@ -305,11 +345,11 @@
               digital.
             </p>
             <div class="sp-links">
-              <!-- ↓ REPLACE href="#" with prints / shop URL -->
+              
               <a href="#" class="sp-link" target="_blank" rel="noopener"
                 >Shop Prints ↗</a
               >
-              <!-- ↓ REPLACE href="#" with Instagram or gallery URL -->
+              
               <a href="#" class="sp-link" target="_blank" rel="noopener"
                 >Gallery ↗</a
               >
@@ -317,7 +357,7 @@
           </div>
           <div class="sp-right">
             <div class="art-grid-2x2">
-              <!-- ↓ REPLACE each src="" with your artwork image paths -->
+              
               <div class="art-cell">
                 <img
                   src=""
@@ -356,9 +396,9 @@
       </div>
     </section>
 
-    <!-- ── MAIN (post-sticky sections) ──────────────── -->
+    
     <main class="container" id="main">
-      <!-- ── 05 · ABOUT ─────────────────────────────── -->
+      
       <section class="about-section reveal-up">
         <div class="section-head">
           <span class="section-num">05</span>
@@ -373,7 +413,7 @@
               <cite>— BAMBI</cite>
             </blockquote>
             <p class="about-body">
-              <!-- ↓ REPLACE: Add your world-building philosophy / creative bio here -->
+              
               Insert your description of your world-building practice, creative
               philosophy, and artistic vision here. Talk about your process,
               your influences, and what drives your work across worlds,
@@ -381,7 +421,7 @@
             </p>
           </div>
           <div class="about-portrait">
-            <!-- ↓ REPLACE: add src="assets/images/portrait.jpg" -->
+            
             <img
               src=""
               alt="BAMBI portrait — replace with your photo"
@@ -392,7 +432,7 @@
         </div>
       </section>
 
-      <!-- ── CONNECT (CTA) ─────────────────────────── -->
+      
       <section class="cta-band reveal-up">
         <div class="cta-inner">
           <p class="cta-eyebrow">— Collaborations &amp; Commissions</p>
@@ -402,7 +442,7 @@
             &nbsp;·&nbsp; Fine art
           </p>
           <div class="cta-actions">
-            <!-- ↓ REPLACE href="mailto:" with your email -->
+            
             <a href="mailto:" class="btn-primary">Get In Touch</a>
             <a
               href="https://solo.to/bambi.us"
@@ -415,7 +455,7 @@
         </div>
       </section>
 
-      <!-- ── FOOTER ─────────────────────────────────── -->
+      
       <footer class="site-footer reveal-up">
         <div class="footer-top">
           <div class="footer-brand-col">
@@ -433,7 +473,7 @@
           </div>
           <div class="footer-col">
             <h4 class="footer-col-title">Social</h4>
-            <!-- ↓ REPLACE each href="#" with your actual social URLs -->
+            
             <a href="#" class="footer-link" target="_blank" rel="noopener"
               >Instagram</a
             >
@@ -456,9 +496,9 @@
               rel="noopener"
               >solo.to/bambi.us ↗</a
             >
-            <!-- ↓ REPLACE mailto: with your email -->
+            
             <a href="mailto:" class="footer-link">Email</a>
-            <!-- ↓ REPLACE mailto: with your booking email -->
+            
             <a href="mailto:" class="footer-link">Booking</a>
           </div>
         </div>
@@ -474,5 +514,6 @@
         </div>
       </footer>
     </main>
+    <script src="transitions.js"></script>
   </body>
 </html>
